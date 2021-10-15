@@ -1,0 +1,55 @@
+syntax = "proto3";
+package stan14100.ngi.did;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/stan14100/NGI/x/did/types";
+import "did/did.proto";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateDidDocument(MsgCreateDidDocument) returns (MsgCreateDidDocumentResponse);
+  rpc UpdateDidDocument(MsgUpdateDidDocument) returns (MsgUpdateDidDocumentResponse);
+  rpc AddService(MsgAddService) returns (MsgAddServiceResponse);
+  rpc DeleteService(MsgDeleteService) returns (MsgDeleteServiceResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateDidDocument {
+  string creator = 1;
+  string id = 2;
+  string controller = 3;
+  repeated Service services = 4;
+}
+
+message MsgCreateDidDocumentResponse {
+}
+
+message MsgUpdateDidDocument {
+  string creator = 1;
+  string id = 2;
+  repeated string controller = 3;
+}
+
+message MsgUpdateDidDocumentResponse {
+}
+
+message MsgAddService {
+  string creator = 1;
+  string id = 2;
+  Service service = 3;
+}
+
+message MsgAddServiceResponse {
+}
+
+message MsgDeleteService {
+  string creator = 1;
+  string id = 2;
+  string serviceId = 3;
+}
+
+message MsgDeleteServiceResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

@@ -19815,3 +19815,187 @@ definitions:
       and
 
       freezing clients
+  stan14100.ngi.did.MsgAddServiceResponse:
+    type: object
+  stan14100.ngi.did.MsgCreateDidDocumentResponse:
+    type: object
+  stan14100.ngi.did.MsgDeleteServiceResponse:
+    type: object
+  stan14100.ngi.did.MsgUpdateDidDocumentResponse:
+    type: object
+  stan14100.ngi.did.Service:
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      serviceEndpoint:
+        type: string
+    title: 'https://www.w3.org/TR/did-core/#service-properties'
+  stan14100.ngi.vc.HealthCenterSubject:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      info:
+        type: object
+        properties:
+          adress:
+            type: string
+          city:
+            type: string
+          country:
+            type: string
+          postcode:
+            type: string
+          vat:
+            type: string
+    title: A structure descrubing a Health Center information
+  stan14100.ngi.vc.Info:
+    type: object
+    properties:
+      adress:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      postcode:
+        type: string
+      vat:
+        type: string
+  stan14100.ngi.vc.MsgCreaRevokeVerifiableCredentialResponse:
+    type: object
+  stan14100.ngi.vc.MsgCreateVerifiableCredentialResponse:
+    type: object
+  stan14100.ngi.vc.Proof:
+    type: object
+    properties:
+      type:
+        type: string
+      created:
+        type: string
+      proofPurpose:
+        type: string
+      verificationMethod:
+        type: string
+      signature:
+        type: string
+    description: >-
+      A cryptographic proof that can be used to detect tampering and verify the
+      authorship of a credential or presentation.
+
+      The specific method used for an embedded proof MUST be included using the
+      type property.
+  stan14100.ngi.vc.VerifiableCredential:
+    type: object
+    properties:
+      context:
+        type: array
+        items:
+          type: string
+        title: >-
+          @context is spec for verifiable credential base context URL is
+          "https://www.w3.org/2018/credentials/v1",
+      id:
+        type: string
+        description: |-
+          The value of the id property MUST be a single URI. It is RECOMMENDED
+          that the URI in the id be one which, if dereferenced, results in a
+          document containing machine-readable information about the id.
+      type:
+        type: array
+        items:
+          type: string
+        description: >-
+          The value of the type property MUST be, or map to (through
+          interpretation
+
+          of the @context property), one or more URIs. If more than one URI is
+
+          provided, the URIs MUST be interpreted as an unordered set.
+      credentialSubject:
+        description: |-
+          The value of the credentialSubject property is defined as a set of
+          objects that contain one or more properties that are each related
+          to a subject of the verifiable credential.
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          info:
+            type: object
+            properties:
+              adress:
+                type: string
+              city:
+                type: string
+              country:
+                type: string
+              postcode:
+                type: string
+              vat:
+                type: string
+        title: A structure descrubing a Health Center information
+      issuer:
+        type: string
+        description: >-
+          The value of the issuer property MUST be either a URI or an object
+
+          containing an id property. It is RECOMMENDED that the URI in the
+          issuer
+
+          or its id be one which, if dereferenced, results in a document
+          containing
+
+          machine-readable information about the issuer that can be used to
+          verify
+
+          the information expressed in the credential.
+      issuanceDate:
+        type: string
+        format: date-time
+        description: >-
+          A credential MUST have an issuanceDate property. The value of the
+          issuanceDate
+
+          property MUST be a string value of an [RFC3339] combined date and time
+          string
+
+          representing the date and time the credential becomes valid, which
+          could
+
+          be a date and time in the future. Note that this value represents the
+          earliest
+
+          point in time at which the information associated with the
+          credentialSubject
+
+          property becomes valid.
+      proof:
+        description: >-
+          One or more cryptographic proofs that can be used to detect tampering
+
+          and verify the authorship of a credential or presentation. The
+          specific
+
+          method used for an embedded proof MUST be included using the type
+          property.
+        type: object
+        properties:
+          type:
+            type: string
+          created:
+            type: string
+          proofPurpose:
+            type: string
+          verificationMethod:
+            type: string
+          signature:
+            type: string
+    title: VerifiableCredential represents a verifiable credential

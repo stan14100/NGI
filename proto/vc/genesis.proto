@@ -1,0 +1,11 @@
+syntax = "proto3";
+package stan14100.ngi.vc;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/stan14100/NGI/x/vc/types";
+
+// GenesisState defines the vc module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+}

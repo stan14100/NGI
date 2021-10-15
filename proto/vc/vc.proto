@@ -1,0 +1,74 @@
+syntax = "proto3";
+package stan14100.ngi.vc;
+
+import "google/protobuf/timestamp.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stan14100/NGI/x/vc/types";
+
+// VerifiableCredential represents a verifiable credential
+message VerifiableCredential {
+  // @context is spec for verifiable credential base context URL is "https://www.w3.org/2018/credentials/v1",
+  repeated string context = 1;
+
+  // The value of the id property MUST be a single URI. It is RECOMMENDED
+  // that the URI in the id be one which, if dereferenced, results in a
+  // document containing machine-readable information about the id.
+  string id = 2;
+
+  // The value of the type property MUST be, or map to (through interpretation
+  // of the @context property), one or more URIs. If more than one URI is
+  // provided, the URIs MUST be interpreted as an unordered set.
+  repeated string type = 3;
+
+  // The value of the credentialSubject property is defined as a set of
+  // objects that contain one or more properties that are each related
+  // to a subject of the verifiable credential.
+  HealthCenterSubject credentialSubject = 4;
+
+  // The value of the issuer property MUST be either a URI or an object
+  // containing an id property. It is RECOMMENDED that the URI in the issuer
+  // or its id be one which, if dereferenced, results in a document containing
+  // machine-readable information about the issuer that can be used to verify
+  // the information expressed in the credential.
+  string issuer = 5;
+
+  // A credential MUST have an issuanceDate property. The value of the issuanceDate
+  // property MUST be a string value of an [RFC3339] combined date and time string
+  // representing the date and time the credential becomes valid, which could
+  // be a date and time in the future. Note that this value represents the earliest
+  // point in time at which the information associated with the credentialSubject
+  // property becomes valid.
+  google.protobuf.Timestamp issuance_date = 6 [(gogoproto.stdtime) = true];
+
+  // One or more cryptographic proofs that can be used to detect tampering
+  // and verify the authorship of a credential or presentation. The specific
+  // method used for an embedded proof MUST be included using the type property.
+  Proof proof = 10;
+}
+
+//A structure descrubing a Health Center information
+message HealthCenterSubject {
+  string id = 1;
+  string name = 2; //legal name of the entity
+  Info info = 3;
+}
+
+message Info {
+  string adress = 1;
+  string city = 2;
+  string country = 3;
+  string postcode = 4;
+  string vat = 5;
+
+}
+
+//A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.
+//The specific method used for an embedded proof MUST be included using the type property.
+message Proof {
+  string type = 1;
+  string created = 2;
+  string proofPurpose = 3;
+  string verificationMethod = 4;
+  string signature = 5;
+}

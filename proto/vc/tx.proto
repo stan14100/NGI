@@ -1,0 +1,32 @@
+syntax = "proto3";
+package stan14100.ngi.vc;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/stan14100/NGI/x/vc/types";
+import "vc/vc.proto";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateVerifiableCredential(MsgCreateVerifiableCredential) returns (MsgCreateVerifiableCredentialResponse);
+  rpc CreaRevokeVerifiableCredential(MsgCreaRevokeVerifiableCredential) returns (MsgCreaRevokeVerifiableCredentialResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateVerifiableCredential {
+  string creator = 1;
+  VerifiableCredential verifiableCredential = 2;
+}
+
+message MsgCreateVerifiableCredentialResponse {
+}
+
+message MsgCreaRevokeVerifiableCredential {
+  string creator = 1;
+  string credentialId = 2;
+}
+
+message MsgCreaRevokeVerifiableCredentialResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
