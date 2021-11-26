@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreaRevokeVerifiableCredential_ValidateBasic(t *testing.T) {
+func TestMsgRevokeVerifiableCredential_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreaRevokeVerifiableCredential
+		msg  MsgRevokeVerifiableCredential
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreaRevokeVerifiableCredential{
+			msg: MsgRevokeVerifiableCredential{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreaRevokeVerifiableCredential{
+			msg: MsgRevokeVerifiableCredential{
 				Creator: sample.AccAddress(),
 			},
 		},

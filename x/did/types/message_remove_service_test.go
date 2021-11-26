@@ -11,18 +11,18 @@ import (
 func TestMsgDeleteService_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgDeleteService
+		msg  MsgRemoveService
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgDeleteService{
+			msg: MsgRemoveService{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgDeleteService{
+			msg: MsgRemoveService{
 				Creator: sample.AccAddress(),
 			},
 		},

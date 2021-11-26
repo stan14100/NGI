@@ -27,6 +27,12 @@ func (k msgServer) UpdateDidDocument(goCtx context.Context, msg *types.MsgUpdate
 	}
 
 	k.Keeper.AddDidDocument(ctx, []byte(msg.Id), didDoc)
+
+	// update the updateTimestamp of metadata of the did doc
+	if err := updateDidMetadata(&k.Keeper, ctx, didDoc.Id); err != nil {
+		k.Logger(ctx).Error(err.Error(), "for did:", didDoc.Id)
+	}
+
 	k.Logger(ctx).Info("updated did document with id:%s and controller:%s", msg.Id, msg.Creator)
 
 	return &types.MsgUpdateDidDocumentResponse{}, nil

@@ -12,8 +12,9 @@ func (k msgServer) CreateDidDocument(goCtx context.Context, msg *types.MsgCreate
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	did, err := types.NewDidDocument(msg.Id,
+		types.WithControllers(msg.Controller),
+		types.WithVerifications(msg.Verifications...),
 		types.WithServices(msg.Services...),
-		// types.WithVerifications(msg.Verifications...),
 	)
 	if err != nil {
 		return nil, err
@@ -25,6 +26,10 @@ func (k msgServer) CreateDidDocument(goCtx context.Context, msg *types.MsgCreate
 	}
 
 	k.Keeper.AddDidDocument(ctx, []byte(msg.Id), did)
+
+	//creation of metadata for this did doc
+	didMetadata := types.NewDidMetadata(ctx.TxBytes(), ctx.BlockTime())
+	k.Keeper.AddDidMetadata(ctx, []byte(msg.Id), didMetadata)
 
 	k.Logger(ctx).Info("Created a DidDocument for did:%s and controller:%s", msg.Id, msg.Creator)
 

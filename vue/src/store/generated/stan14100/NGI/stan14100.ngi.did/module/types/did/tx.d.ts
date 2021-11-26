@@ -1,10 +1,16 @@
 import { Reader, Writer } from 'protobufjs/minimal';
-import { Service } from '../did/did';
+import { VerificationMethod, Service } from '../did/did';
 export declare const protobufPackage = "stan14100.ngi.did";
+/** Verification is a message/type for assigning verification methods to dids */
+export interface Verification {
+    method: VerificationMethod | undefined;
+    relationships: string[];
+}
 export interface MsgCreateDidDocument {
     creator: string;
     id: string;
     controller: string;
+    verifications: Verification[];
     services: Service[];
 }
 export interface MsgCreateDidDocumentResponse {
@@ -23,13 +29,20 @@ export interface MsgAddService {
 }
 export interface MsgAddServiceResponse {
 }
-export interface MsgDeleteService {
+export interface MsgRemoveService {
     creator: string;
     id: string;
     serviceId: string;
 }
-export interface MsgDeleteServiceResponse {
+export interface MsgRemoveServiceResponse {
 }
+export declare const Verification: {
+    encode(message: Verification, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): Verification;
+    fromJSON(object: any): Verification;
+    toJSON(message: Verification): unknown;
+    fromPartial(object: DeepPartial<Verification>): Verification;
+};
 export declare const MsgCreateDidDocument: {
     encode(message: MsgCreateDidDocument, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgCreateDidDocument;
@@ -72,19 +85,19 @@ export declare const MsgAddServiceResponse: {
     toJSON(_: MsgAddServiceResponse): unknown;
     fromPartial(_: DeepPartial<MsgAddServiceResponse>): MsgAddServiceResponse;
 };
-export declare const MsgDeleteService: {
-    encode(message: MsgDeleteService, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgDeleteService;
-    fromJSON(object: any): MsgDeleteService;
-    toJSON(message: MsgDeleteService): unknown;
-    fromPartial(object: DeepPartial<MsgDeleteService>): MsgDeleteService;
+export declare const MsgRemoveService: {
+    encode(message: MsgRemoveService, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRemoveService;
+    fromJSON(object: any): MsgRemoveService;
+    toJSON(message: MsgRemoveService): unknown;
+    fromPartial(object: DeepPartial<MsgRemoveService>): MsgRemoveService;
 };
-export declare const MsgDeleteServiceResponse: {
-    encode(_: MsgDeleteServiceResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgDeleteServiceResponse;
-    fromJSON(_: any): MsgDeleteServiceResponse;
-    toJSON(_: MsgDeleteServiceResponse): unknown;
-    fromPartial(_: DeepPartial<MsgDeleteServiceResponse>): MsgDeleteServiceResponse;
+export declare const MsgRemoveServiceResponse: {
+    encode(_: MsgRemoveServiceResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRemoveServiceResponse;
+    fromJSON(_: any): MsgRemoveServiceResponse;
+    toJSON(_: MsgRemoveServiceResponse): unknown;
+    fromPartial(_: DeepPartial<MsgRemoveServiceResponse>): MsgRemoveServiceResponse;
 };
 /** Msg defines the Msg service. */
 export interface Msg {
@@ -92,7 +105,7 @@ export interface Msg {
     UpdateDidDocument(request: MsgUpdateDidDocument): Promise<MsgUpdateDidDocumentResponse>;
     AddService(request: MsgAddService): Promise<MsgAddServiceResponse>;
     /** this line is used by starport scaffolding # proto/tx/rpc */
-    DeleteService(request: MsgDeleteService): Promise<MsgDeleteServiceResponse>;
+    RemoveService(request: MsgRemoveService): Promise<MsgRemoveServiceResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -100,7 +113,7 @@ export declare class MsgClientImpl implements Msg {
     CreateDidDocument(request: MsgCreateDidDocument): Promise<MsgCreateDidDocumentResponse>;
     UpdateDidDocument(request: MsgUpdateDidDocument): Promise<MsgUpdateDidDocumentResponse>;
     AddService(request: MsgAddService): Promise<MsgAddServiceResponse>;
-    DeleteService(request: MsgDeleteService): Promise<MsgDeleteServiceResponse>;
+    RemoveService(request: MsgRemoveService): Promise<MsgRemoveServiceResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

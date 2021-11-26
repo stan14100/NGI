@@ -19,8 +19,8 @@ export interface VcInfo {
     postcode?: string;
     vat?: string;
 }
-export declare type VcMsgCreaRevokeVerifiableCredentialResponse = object;
-export declare type VcMsgCreateVerifiableCredentialResponse = object;
+export declare type VcMsgIssueVerifiableCredentialResponse = object;
+export declare type VcMsgRevokeVerifiableCredentialResponse = object;
 /**
 * A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.
 The specific method used for an embedded proof MUST be included using the type property.

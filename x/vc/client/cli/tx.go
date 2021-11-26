@@ -29,7 +29,8 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdCreaRevokeVerifiableCredential())
+	cmd.AddCommand(CmdRevokeVerifiableCredential())
+	cmd.AddCommand(CmdRevokeVerifiableCredential())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

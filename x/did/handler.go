@@ -26,8 +26,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgAddService:
 			res, err := msgServer.AddService(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteService:
-			res, err := msgServer.DeleteService(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRemoveService:
+			res, err := msgServer.RemoveService(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

@@ -20,7 +20,7 @@ const (
 	DidPrefix = "did:cosmos:"
 
 	// DidKeyPrefix defines the did key
-	DidKeyPrefix = "did:cosmos:key:"
+	DidKeyPrefix = "did:cosmos:ngi:"
 
 	// DidDocumentKey prefix for each key of a DidDocument
 	DidDocumentKey = "DidDocument"

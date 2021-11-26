@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stan14100.ngi.did;
 
+import "did/did.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
@@ -9,7 +10,23 @@ option go_package = "github.com/stan14100/NGI/x/did/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+// Queries a list of dids items.
+	rpc Dids(QueryDidsRequest) returns (QueryDidsResponse) {
+		option (google.api.http).get = "/stan14100/ngi/did/dids";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryDidsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+
+}
+
+message QueryDidsResponse {
+  repeated DidDocument didDocuments = 1;
+
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

@@ -17,11 +17,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgCreateVerifiableCredential:
-			res, err := msgServer.CreateVerifiableCredential(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgIssueVerifiableCredential:
+			res, err := msgServer.IssueVerifiableCredential(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreaRevokeVerifiableCredential:
-			res, err := msgServer.CreaRevokeVerifiableCredential(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRevokeVerifiableCredential:
+			res, err := msgServer.RevokeVerifiableCredential(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

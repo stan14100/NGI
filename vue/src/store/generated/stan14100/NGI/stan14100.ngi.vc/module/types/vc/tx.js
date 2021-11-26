@@ -2,8 +2,8 @@
 import { Reader, Writer } from 'protobufjs/minimal';
 import { VerifiableCredential } from '../vc/vc';
 export const protobufPackage = 'stan14100.ngi.vc';
-const baseMsgCreateVerifiableCredential = { creator: '' };
-export const MsgCreateVerifiableCredential = {
+const baseMsgIssueVerifiableCredential = { creator: '' };
+export const MsgIssueVerifiableCredential = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
             writer.uint32(10).string(message.creator);
@@ -16,7 +16,7 @@ export const MsgCreateVerifiableCredential = {
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseMsgCreateVerifiableCredential };
+        const message = { ...baseMsgIssueVerifiableCredential };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -34,7 +34,7 @@ export const MsgCreateVerifiableCredential = {
         return message;
     },
     fromJSON(object) {
-        const message = { ...baseMsgCreateVerifiableCredential };
+        const message = { ...baseMsgIssueVerifiableCredential };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
         }
@@ -57,7 +57,7 @@ export const MsgCreateVerifiableCredential = {
         return obj;
     },
     fromPartial(object) {
-        const message = { ...baseMsgCreateVerifiableCredential };
+        const message = { ...baseMsgIssueVerifiableCredential };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
         }
@@ -73,15 +73,15 @@ export const MsgCreateVerifiableCredential = {
         return message;
     }
 };
-const baseMsgCreateVerifiableCredentialResponse = {};
-export const MsgCreateVerifiableCredentialResponse = {
+const baseMsgIssueVerifiableCredentialResponse = {};
+export const MsgIssueVerifiableCredentialResponse = {
     encode(_, writer = Writer.create()) {
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseMsgCreateVerifiableCredentialResponse };
+        const message = { ...baseMsgIssueVerifiableCredentialResponse };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -93,7 +93,7 @@ export const MsgCreateVerifiableCredentialResponse = {
         return message;
     },
     fromJSON(_) {
-        const message = { ...baseMsgCreateVerifiableCredentialResponse };
+        const message = { ...baseMsgIssueVerifiableCredentialResponse };
         return message;
     },
     toJSON(_) {
@@ -101,12 +101,12 @@ export const MsgCreateVerifiableCredentialResponse = {
         return obj;
     },
     fromPartial(_) {
-        const message = { ...baseMsgCreateVerifiableCredentialResponse };
+        const message = { ...baseMsgIssueVerifiableCredentialResponse };
         return message;
     }
 };
-const baseMsgCreaRevokeVerifiableCredential = { creator: '', credentialId: '' };
-export const MsgCreaRevokeVerifiableCredential = {
+const baseMsgRevokeVerifiableCredential = { creator: '', credentialId: '' };
+export const MsgRevokeVerifiableCredential = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
             writer.uint32(10).string(message.creator);
@@ -119,7 +119,7 @@ export const MsgCreaRevokeVerifiableCredential = {
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseMsgCreaRevokeVerifiableCredential };
+        const message = { ...baseMsgRevokeVerifiableCredential };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -137,7 +137,7 @@ export const MsgCreaRevokeVerifiableCredential = {
         return message;
     },
     fromJSON(object) {
-        const message = { ...baseMsgCreaRevokeVerifiableCredential };
+        const message = { ...baseMsgRevokeVerifiableCredential };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
         }
@@ -159,7 +159,7 @@ export const MsgCreaRevokeVerifiableCredential = {
         return obj;
     },
     fromPartial(object) {
-        const message = { ...baseMsgCreaRevokeVerifiableCredential };
+        const message = { ...baseMsgRevokeVerifiableCredential };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
         }
@@ -175,15 +175,15 @@ export const MsgCreaRevokeVerifiableCredential = {
         return message;
     }
 };
-const baseMsgCreaRevokeVerifiableCredentialResponse = {};
-export const MsgCreaRevokeVerifiableCredentialResponse = {
+const baseMsgRevokeVerifiableCredentialResponse = {};
+export const MsgRevokeVerifiableCredentialResponse = {
     encode(_, writer = Writer.create()) {
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseMsgCreaRevokeVerifiableCredentialResponse };
+        const message = { ...baseMsgRevokeVerifiableCredentialResponse };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -195,7 +195,7 @@ export const MsgCreaRevokeVerifiableCredentialResponse = {
         return message;
     },
     fromJSON(_) {
-        const message = { ...baseMsgCreaRevokeVerifiableCredentialResponse };
+        const message = { ...baseMsgRevokeVerifiableCredentialResponse };
         return message;
     },
     toJSON(_) {
@@ -203,7 +203,7 @@ export const MsgCreaRevokeVerifiableCredentialResponse = {
         return obj;
     },
     fromPartial(_) {
-        const message = { ...baseMsgCreaRevokeVerifiableCredentialResponse };
+        const message = { ...baseMsgRevokeVerifiableCredentialResponse };
         return message;
     }
 };
@@ -211,14 +211,14 @@ export class MsgClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
     }
-    CreateVerifiableCredential(request) {
-        const data = MsgCreateVerifiableCredential.encode(request).finish();
-        const promise = this.rpc.request('stan14100.ngi.vc.Msg', 'CreateVerifiableCredential', data);
-        return promise.then((data) => MsgCreateVerifiableCredentialResponse.decode(new Reader(data)));
+    IssueVerifiableCredential(request) {
+        const data = MsgIssueVerifiableCredential.encode(request).finish();
+        const promise = this.rpc.request('stan14100.ngi.vc.Msg', 'IssueVerifiableCredential', data);
+        return promise.then((data) => MsgIssueVerifiableCredentialResponse.decode(new Reader(data)));
     }
-    CreaRevokeVerifiableCredential(request) {
-        const data = MsgCreaRevokeVerifiableCredential.encode(request).finish();
-        const promise = this.rpc.request('stan14100.ngi.vc.Msg', 'CreaRevokeVerifiableCredential', data);
-        return promise.then((data) => MsgCreaRevokeVerifiableCredentialResponse.decode(new Reader(data)));
+    RevokeVerifiableCredential(request) {
+        const data = MsgRevokeVerifiableCredential.encode(request).finish();
+        const promise = this.rpc.request('stan14100.ngi.vc.Msg', 'RevokeVerifiableCredential', data);
+        return promise.then((data) => MsgRevokeVerifiableCredentialResponse.decode(new Reader(data)));
     }
 }

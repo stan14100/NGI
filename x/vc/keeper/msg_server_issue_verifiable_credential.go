@@ -8,7 +8,7 @@ import (
 	"github.com/stan14100/NGI/x/vc/types"
 )
 
-func (k msgServer) CreateVerifiableCredential(goCtx context.Context, msg *types.MsgCreateVerifiableCredential) (*types.MsgCreateVerifiableCredentialResponse, error) {
+func (k msgServer) IssueVerifiableCredential(goCtx context.Context, msg *types.MsgIssueVerifiableCredential) (*types.MsgIssueVerifiableCredentialResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	_, found := k.Keeper.GetVerifiableCredential(ctx, []byte(msg.VerifiableCredential.Id))
@@ -26,5 +26,5 @@ func (k msgServer) CreateVerifiableCredential(goCtx context.Context, msg *types.
 		*msg.VerifiableCredential,
 	)
 
-	return &types.MsgCreateVerifiableCredentialResponse{}, nil
+	return &types.MsgIssueVerifiableCredentialResponse{}, nil
 }

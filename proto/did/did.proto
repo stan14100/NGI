@@ -3,6 +3,8 @@ package stan14100.ngi.did;
 
 option go_package = "github.com/stan14100/NGI/x/did/types";
 
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
 
 //https://www.w3.org/TR/did-core/#did-document-properties
 message DidDocument {
@@ -14,8 +16,14 @@ message DidDocument {
   string id = 2;
 
   // A DID controller is an entity that is authorized to make changes to a DID document.
-  // cfr. https://www.w3.org/TR/did-core/#did-controller
+  // https://www.w3.org/TR/did-core/#did-controller
   repeated string controller = 3;
+
+  // A DID document can express verification methods, 
+  // such as cryptographic public keys, which can be used 
+  // to authenticate or authorize interactions with the DID subject or associated parties.
+  // https://www.w3.org/TR/did-core/#verification-methods
+  repeated VerificationMethod verificationMethod = 4;
 
   // Services are used in DID documents to express ways of communicating with the DID subject or associated entities.
   // https://www.w3.org/TR/did-core/#services
@@ -25,24 +33,35 @@ message DidDocument {
 
   // Authentication represents public key associated with the did document.
   // https://www.w3.org/TR/did-core/#authentication
-  repeated string authentication                   = 6;
+  repeated string authentication = 6;
 
   // Used to specify how the DID subject is expected to express claims, such as for the purposes of issuing a Verifiable Credential.
   // https://www.w3.org/TR/did-core/#assertion
-  repeated string assertionMethod                  = 7;
+  repeated string assertionMethod = 7;
 
   // used to specify how an entity can generate encryption material in order to transmit confidential information intended for the DID subject.
   // https://www.w3.org/TR/did-core/#key-agreement
-  repeated string keyAgreement                     = 8;
+  repeated string keyAgreement = 8;
 
   // Used to specify a verification method that might be used by the DID subject to invoke a cryptographic capability,  
   // such as the authorization to update the DID Document.
   // https://www.w3.org/TR/did-core/#capability-invocation
-  repeated string capabilityInvocation             = 9;
+  repeated string capabilityInvocation = 9;
 
   // Used to specify a mechanism that might be used by the DID subject to delegate a cryptographic capability to another party.
   // https://www.w3.org/TR/did-core/#capability-delegation
-  repeated string capabilityDelegation             = 10;
+  repeated string capabilityDelegation = 10;
+}
+
+// https://www.w3.org/TR/did-core/#verification-methods
+message VerificationMethod {
+  string id = 1;
+  string type = 2;
+  string controller = 3;
+  oneof verificationMaterial { 
+    string publicKeyHex        = 4;
+    string publicKeyMultibase  = 5;
+  }
 }
 
 //https://www.w3.org/TR/did-core/#service-properties
@@ -50,4 +69,10 @@ message Service {
   string id = 1;
   string type = 2;
   string serviceEndpoint = 3;
+}
+
+message DidMetadata {
+  string versionId = 1;
+  google.protobuf.Timestamp createdTimestamp = 2 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp updatedTimestamp = 3 [(gogoproto.stdtime) = true];
 }

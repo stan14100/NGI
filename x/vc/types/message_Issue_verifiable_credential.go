@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgCreateVerifiableCredential{}
+var _ sdk.Msg = &MsgIssueVerifiableCredential{}
 
-func NewMsgCreateVerifiableCredential(creator string, verifiableCredential *VerifiableCredential) *MsgCreateVerifiableCredential {
-	return &MsgCreateVerifiableCredential{
+func NewMsgIssueVerifiableCredential(creator string, verifiableCredential *VerifiableCredential) *MsgIssueVerifiableCredential {
+	return &MsgIssueVerifiableCredential{
 		Creator:              creator,
 		VerifiableCredential: verifiableCredential,
 	}
 }
 
-func (msg *MsgCreateVerifiableCredential) Route() string {
+func (msg *MsgIssueVerifiableCredential) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateVerifiableCredential) Type() string {
-	return "CreateVerifiableCredential"
+func (msg *MsgIssueVerifiableCredential) Type() string {
+	return "IssueVerifiableCredential"
 }
 
-func (msg *MsgCreateVerifiableCredential) GetSigners() []sdk.AccAddress {
+func (msg *MsgIssueVerifiableCredential) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -30,12 +30,12 @@ func (msg *MsgCreateVerifiableCredential) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateVerifiableCredential) GetSignBytes() []byte {
+func (msg *MsgIssueVerifiableCredential) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateVerifiableCredential) ValidateBasic() error {
+func (msg *MsgIssueVerifiableCredential) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

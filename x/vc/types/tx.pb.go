@@ -27,23 +27,23 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgCreateVerifiableCredential struct {
+type MsgIssueVerifiableCredential struct {
 	Creator              string                `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	VerifiableCredential *VerifiableCredential `protobuf:"bytes,2,opt,name=verifiableCredential,proto3" json:"verifiableCredential,omitempty"`
 }
 
-func (m *MsgCreateVerifiableCredential) Reset()         { *m = MsgCreateVerifiableCredential{} }
-func (m *MsgCreateVerifiableCredential) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateVerifiableCredential) ProtoMessage()    {}
-func (*MsgCreateVerifiableCredential) Descriptor() ([]byte, []int) {
+func (m *MsgIssueVerifiableCredential) Reset()         { *m = MsgIssueVerifiableCredential{} }
+func (m *MsgIssueVerifiableCredential) String() string { return proto.CompactTextString(m) }
+func (*MsgIssueVerifiableCredential) ProtoMessage()    {}
+func (*MsgIssueVerifiableCredential) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dea7a18c64220a87, []int{0}
 }
-func (m *MsgCreateVerifiableCredential) XXX_Unmarshal(b []byte) error {
+func (m *MsgIssueVerifiableCredential) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateVerifiableCredential) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgIssueVerifiableCredential) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateVerifiableCredential.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgIssueVerifiableCredential.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -53,47 +53,47 @@ func (m *MsgCreateVerifiableCredential) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateVerifiableCredential) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateVerifiableCredential.Merge(m, src)
+func (m *MsgIssueVerifiableCredential) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgIssueVerifiableCredential.Merge(m, src)
 }
-func (m *MsgCreateVerifiableCredential) XXX_Size() int {
+func (m *MsgIssueVerifiableCredential) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateVerifiableCredential) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateVerifiableCredential.DiscardUnknown(m)
+func (m *MsgIssueVerifiableCredential) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgIssueVerifiableCredential.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateVerifiableCredential proto.InternalMessageInfo
+var xxx_messageInfo_MsgIssueVerifiableCredential proto.InternalMessageInfo
 
-func (m *MsgCreateVerifiableCredential) GetCreator() string {
+func (m *MsgIssueVerifiableCredential) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateVerifiableCredential) GetVerifiableCredential() *VerifiableCredential {
+func (m *MsgIssueVerifiableCredential) GetVerifiableCredential() *VerifiableCredential {
 	if m != nil {
 		return m.VerifiableCredential
 	}
 	return nil
 }
 
-type MsgCreateVerifiableCredentialResponse struct {
+type MsgIssueVerifiableCredentialResponse struct {
 }
 
-func (m *MsgCreateVerifiableCredentialResponse) Reset()         { *m = MsgCreateVerifiableCredentialResponse{} }
-func (m *MsgCreateVerifiableCredentialResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateVerifiableCredentialResponse) ProtoMessage()    {}
-func (*MsgCreateVerifiableCredentialResponse) Descriptor() ([]byte, []int) {
+func (m *MsgIssueVerifiableCredentialResponse) Reset()         { *m = MsgIssueVerifiableCredentialResponse{} }
+func (m *MsgIssueVerifiableCredentialResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgIssueVerifiableCredentialResponse) ProtoMessage()    {}
+func (*MsgIssueVerifiableCredentialResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dea7a18c64220a87, []int{1}
 }
-func (m *MsgCreateVerifiableCredentialResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgIssueVerifiableCredentialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateVerifiableCredentialResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgIssueVerifiableCredentialResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateVerifiableCredentialResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgIssueVerifiableCredentialResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -103,35 +103,35 @@ func (m *MsgCreateVerifiableCredentialResponse) XXX_Marshal(b []byte, determinis
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateVerifiableCredentialResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateVerifiableCredentialResponse.Merge(m, src)
+func (m *MsgIssueVerifiableCredentialResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgIssueVerifiableCredentialResponse.Merge(m, src)
 }
-func (m *MsgCreateVerifiableCredentialResponse) XXX_Size() int {
+func (m *MsgIssueVerifiableCredentialResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateVerifiableCredentialResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateVerifiableCredentialResponse.DiscardUnknown(m)
+func (m *MsgIssueVerifiableCredentialResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgIssueVerifiableCredentialResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateVerifiableCredentialResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgIssueVerifiableCredentialResponse proto.InternalMessageInfo
 
-type MsgCreaRevokeVerifiableCredential struct {
+type MsgRevokeVerifiableCredential struct {
 	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	CredentialId string `protobuf:"bytes,2,opt,name=credentialId,proto3" json:"credentialId,omitempty"`
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) Reset()         { *m = MsgCreaRevokeVerifiableCredential{} }
-func (m *MsgCreaRevokeVerifiableCredential) String() string { return proto.CompactTextString(m) }
-func (*MsgCreaRevokeVerifiableCredential) ProtoMessage()    {}
-func (*MsgCreaRevokeVerifiableCredential) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeVerifiableCredential) Reset()         { *m = MsgRevokeVerifiableCredential{} }
+func (m *MsgRevokeVerifiableCredential) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeVerifiableCredential) ProtoMessage()    {}
+func (*MsgRevokeVerifiableCredential) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dea7a18c64220a87, []int{2}
 }
-func (m *MsgCreaRevokeVerifiableCredential) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeVerifiableCredential) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreaRevokeVerifiableCredential) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeVerifiableCredential) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreaRevokeVerifiableCredential.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeVerifiableCredential.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -141,51 +141,47 @@ func (m *MsgCreaRevokeVerifiableCredential) XXX_Marshal(b []byte, deterministic 
 		return b[:n], nil
 	}
 }
-func (m *MsgCreaRevokeVerifiableCredential) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreaRevokeVerifiableCredential.Merge(m, src)
+func (m *MsgRevokeVerifiableCredential) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeVerifiableCredential.Merge(m, src)
 }
-func (m *MsgCreaRevokeVerifiableCredential) XXX_Size() int {
+func (m *MsgRevokeVerifiableCredential) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreaRevokeVerifiableCredential) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreaRevokeVerifiableCredential.DiscardUnknown(m)
+func (m *MsgRevokeVerifiableCredential) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeVerifiableCredential.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreaRevokeVerifiableCredential proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeVerifiableCredential proto.InternalMessageInfo
 
-func (m *MsgCreaRevokeVerifiableCredential) GetCreator() string {
+func (m *MsgRevokeVerifiableCredential) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) GetCredentialId() string {
+func (m *MsgRevokeVerifiableCredential) GetCredentialId() string {
 	if m != nil {
 		return m.CredentialId
 	}
 	return ""
 }
 
-type MsgCreaRevokeVerifiableCredentialResponse struct {
+type MsgRevokeVerifiableCredentialResponse struct {
 }
 
-func (m *MsgCreaRevokeVerifiableCredentialResponse) Reset() {
-	*m = MsgCreaRevokeVerifiableCredentialResponse{}
-}
-func (m *MsgCreaRevokeVerifiableCredentialResponse) String() string {
-	return proto.CompactTextString(m)
-}
-func (*MsgCreaRevokeVerifiableCredentialResponse) ProtoMessage() {}
-func (*MsgCreaRevokeVerifiableCredentialResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeVerifiableCredentialResponse) Reset()         { *m = MsgRevokeVerifiableCredentialResponse{} }
+func (m *MsgRevokeVerifiableCredentialResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeVerifiableCredentialResponse) ProtoMessage()    {}
+func (*MsgRevokeVerifiableCredentialResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dea7a18c64220a87, []int{3}
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeVerifiableCredentialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeVerifiableCredentialResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreaRevokeVerifiableCredentialResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeVerifiableCredentialResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -195,48 +191,48 @@ func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_Marshal(b []byte, determ
 		return b[:n], nil
 	}
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreaRevokeVerifiableCredentialResponse.Merge(m, src)
+func (m *MsgRevokeVerifiableCredentialResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeVerifiableCredentialResponse.Merge(m, src)
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_Size() int {
+func (m *MsgRevokeVerifiableCredentialResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreaRevokeVerifiableCredentialResponse.DiscardUnknown(m)
+func (m *MsgRevokeVerifiableCredentialResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeVerifiableCredentialResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreaRevokeVerifiableCredentialResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeVerifiableCredentialResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateVerifiableCredential)(nil), "stan14100.ngi.vc.MsgCreateVerifiableCredential")
-	proto.RegisterType((*MsgCreateVerifiableCredentialResponse)(nil), "stan14100.ngi.vc.MsgCreateVerifiableCredentialResponse")
-	proto.RegisterType((*MsgCreaRevokeVerifiableCredential)(nil), "stan14100.ngi.vc.MsgCreaRevokeVerifiableCredential")
-	proto.RegisterType((*MsgCreaRevokeVerifiableCredentialResponse)(nil), "stan14100.ngi.vc.MsgCreaRevokeVerifiableCredentialResponse")
+	proto.RegisterType((*MsgIssueVerifiableCredential)(nil), "stan14100.ngi.vc.MsgIssueVerifiableCredential")
+	proto.RegisterType((*MsgIssueVerifiableCredentialResponse)(nil), "stan14100.ngi.vc.MsgIssueVerifiableCredentialResponse")
+	proto.RegisterType((*MsgRevokeVerifiableCredential)(nil), "stan14100.ngi.vc.MsgRevokeVerifiableCredential")
+	proto.RegisterType((*MsgRevokeVerifiableCredentialResponse)(nil), "stan14100.ngi.vc.MsgRevokeVerifiableCredentialResponse")
 }
 
 func init() { proto.RegisterFile("vc/tx.proto", fileDescriptor_dea7a18c64220a87) }
 
 var fileDescriptor_dea7a18c64220a87 = []byte{
-	// 300 bytes of a gzipped FileDescriptorProto
+	// 302 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2e, 0x4b, 0xd6, 0x2f,
 	0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x28, 0x2e, 0x49, 0xcc, 0x33, 0x34, 0x31,
 	0x34, 0x30, 0xd0, 0xcb, 0x4b, 0xcf, 0xd4, 0x2b, 0x4b, 0x96, 0x02, 0x49, 0x97, 0x25, 0x43, 0xa4,
-	0x95, 0xa6, 0x32, 0x72, 0xc9, 0xfa, 0x16, 0xa7, 0x3b, 0x17, 0xa5, 0x26, 0x96, 0xa4, 0x86, 0xa5,
-	0x16, 0x65, 0xa6, 0x65, 0x26, 0x26, 0xe5, 0xa4, 0x3a, 0x17, 0xa5, 0xa6, 0xa4, 0xe6, 0x95, 0x64,
-	0x26, 0xe6, 0x08, 0x49, 0x70, 0xb1, 0x27, 0x83, 0x64, 0xf3, 0x8b, 0x24, 0x18, 0x15, 0x18, 0x35,
-	0x38, 0x83, 0x60, 0x5c, 0xa1, 0x28, 0x2e, 0x91, 0x32, 0x2c, 0x3a, 0x24, 0x98, 0x14, 0x18, 0x35,
-	0xb8, 0x8d, 0xd4, 0xf4, 0xd0, 0x6d, 0xd6, 0xc3, 0x66, 0x7e, 0x10, 0x56, 0x33, 0x94, 0xd4, 0xb9,
-	0x54, 0xf1, 0x3a, 0x2b, 0x28, 0xb5, 0xb8, 0x20, 0x3f, 0xaf, 0x38, 0x55, 0x29, 0x91, 0x4b, 0x11,
-	0xaa, 0x30, 0x28, 0xb5, 0x2c, 0x3f, 0x9b, 0x54, 0x3f, 0x28, 0x71, 0xf1, 0x24, 0xc3, 0xd5, 0x79,
-	0xa6, 0x80, 0xdd, 0xce, 0x19, 0x84, 0x22, 0xa6, 0xa4, 0xcd, 0xa5, 0x49, 0xd0, 0x0a, 0x98, 0x7b,
-	0x8c, 0x16, 0x33, 0x71, 0x31, 0xfb, 0x16, 0xa7, 0x0b, 0xb5, 0x31, 0x72, 0x49, 0xe1, 0x09, 0x55,
-	0x7d, 0xcc, 0xd0, 0xc1, 0xeb, 0x5f, 0x29, 0x73, 0x12, 0x35, 0xc0, 0x1c, 0x24, 0x34, 0x89, 0x91,
-	0x4b, 0x8e, 0x40, 0xf0, 0x18, 0xe3, 0x34, 0x1b, 0xb7, 0x26, 0x29, 0x6b, 0x32, 0x34, 0xc1, 0x1c,
-	0xe5, 0x64, 0x7b, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e,
-	0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0xca, 0xe9, 0x99,
-	0x25, 0x19, 0xa5, 0x49, 0x7a, 0xc9, 0xf9, 0xb9, 0xfa, 0x70, 0x0b, 0xf4, 0xfd, 0xdc, 0x3d, 0xf5,
-	0x2b, 0xf4, 0x41, 0xe9, 0xba, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x9c, 0x78, 0x8d, 0x01, 0x01,
-	0x00, 0x00, 0xff, 0xff, 0xa1, 0x3e, 0xb9, 0x8f, 0xea, 0x02, 0x00, 0x00,
+	0x95, 0xa6, 0x30, 0x72, 0xc9, 0xf8, 0x16, 0xa7, 0x7b, 0x16, 0x17, 0x97, 0xa6, 0x86, 0xa5, 0x16,
+	0x65, 0xa6, 0x65, 0x26, 0x26, 0xe5, 0xa4, 0x3a, 0x17, 0xa5, 0xa6, 0xa4, 0xe6, 0x95, 0x64, 0x26,
+	0xe6, 0x08, 0x49, 0x70, 0xb1, 0x27, 0x17, 0xa5, 0x26, 0x96, 0xe4, 0x17, 0x49, 0x30, 0x2a, 0x30,
+	0x6a, 0x70, 0x06, 0xc1, 0xb8, 0x42, 0x51, 0x5c, 0x22, 0x65, 0x58, 0x74, 0x48, 0x30, 0x29, 0x30,
+	0x6a, 0x70, 0x1b, 0xa9, 0xe9, 0xa1, 0x5b, 0xac, 0x87, 0xcd, 0xfc, 0x20, 0xac, 0x66, 0x28, 0xa9,
+	0x71, 0xa9, 0xe0, 0x73, 0x55, 0x50, 0x6a, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa, 0x52, 0x2c, 0x97,
+	0xac, 0x6f, 0x71, 0x7a, 0x50, 0x6a, 0x59, 0x7e, 0x36, 0xa9, 0xce, 0x57, 0xe2, 0xe2, 0x49, 0x86,
+	0xab, 0xf3, 0x4c, 0x01, 0x3b, 0x9b, 0x33, 0x08, 0x45, 0x4c, 0x49, 0x9d, 0x4b, 0x15, 0xaf, 0xf1,
+	0x30, 0x77, 0x18, 0x4d, 0x61, 0xe2, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0x6a, 0x66, 0xe4, 0x92, 0xc4,
+	0x1d, 0x96, 0x7a, 0x98, 0x61, 0x82, 0xcf, 0x97, 0x52, 0x66, 0xa4, 0xa9, 0x87, 0xb9, 0x46, 0xa8,
+	0x8d, 0x91, 0x4b, 0x0a, 0x4f, 0x98, 0xe8, 0x63, 0x35, 0x16, 0xb7, 0x06, 0x29, 0x73, 0x12, 0x35,
+	0xc0, 0x1c, 0xe2, 0x64, 0x7b, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9,
+	0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0xca,
+	0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x7a, 0xc9, 0xf9, 0xb9, 0xfa, 0x70, 0xc3, 0xf5, 0xfd, 0xdc,
+	0x3d, 0xf5, 0x2b, 0xf4, 0x41, 0xc9, 0xb7, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x9c, 0x46, 0x8d,
+	0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x24, 0x03, 0x59, 0x0d, 0xd1, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -251,8 +247,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	CreateVerifiableCredential(ctx context.Context, in *MsgCreateVerifiableCredential, opts ...grpc.CallOption) (*MsgCreateVerifiableCredentialResponse, error)
-	CreaRevokeVerifiableCredential(ctx context.Context, in *MsgCreaRevokeVerifiableCredential, opts ...grpc.CallOption) (*MsgCreaRevokeVerifiableCredentialResponse, error)
+	IssueVerifiableCredential(ctx context.Context, in *MsgIssueVerifiableCredential, opts ...grpc.CallOption) (*MsgIssueVerifiableCredentialResponse, error)
+	RevokeVerifiableCredential(ctx context.Context, in *MsgRevokeVerifiableCredential, opts ...grpc.CallOption) (*MsgRevokeVerifiableCredentialResponse, error)
 }
 
 type msgClient struct {
@@ -263,18 +259,18 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) CreateVerifiableCredential(ctx context.Context, in *MsgCreateVerifiableCredential, opts ...grpc.CallOption) (*MsgCreateVerifiableCredentialResponse, error) {
-	out := new(MsgCreateVerifiableCredentialResponse)
-	err := c.cc.Invoke(ctx, "/stan14100.ngi.vc.Msg/CreateVerifiableCredential", in, out, opts...)
+func (c *msgClient) IssueVerifiableCredential(ctx context.Context, in *MsgIssueVerifiableCredential, opts ...grpc.CallOption) (*MsgIssueVerifiableCredentialResponse, error) {
+	out := new(MsgIssueVerifiableCredentialResponse)
+	err := c.cc.Invoke(ctx, "/stan14100.ngi.vc.Msg/IssueVerifiableCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) CreaRevokeVerifiableCredential(ctx context.Context, in *MsgCreaRevokeVerifiableCredential, opts ...grpc.CallOption) (*MsgCreaRevokeVerifiableCredentialResponse, error) {
-	out := new(MsgCreaRevokeVerifiableCredentialResponse)
-	err := c.cc.Invoke(ctx, "/stan14100.ngi.vc.Msg/CreaRevokeVerifiableCredential", in, out, opts...)
+func (c *msgClient) RevokeVerifiableCredential(ctx context.Context, in *MsgRevokeVerifiableCredential, opts ...grpc.CallOption) (*MsgRevokeVerifiableCredentialResponse, error) {
+	out := new(MsgRevokeVerifiableCredentialResponse)
+	err := c.cc.Invoke(ctx, "/stan14100.ngi.vc.Msg/RevokeVerifiableCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -283,57 +279,57 @@ func (c *msgClient) CreaRevokeVerifiableCredential(ctx context.Context, in *MsgC
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	CreateVerifiableCredential(context.Context, *MsgCreateVerifiableCredential) (*MsgCreateVerifiableCredentialResponse, error)
-	CreaRevokeVerifiableCredential(context.Context, *MsgCreaRevokeVerifiableCredential) (*MsgCreaRevokeVerifiableCredentialResponse, error)
+	IssueVerifiableCredential(context.Context, *MsgIssueVerifiableCredential) (*MsgIssueVerifiableCredentialResponse, error)
+	RevokeVerifiableCredential(context.Context, *MsgRevokeVerifiableCredential) (*MsgRevokeVerifiableCredentialResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) CreateVerifiableCredential(ctx context.Context, req *MsgCreateVerifiableCredential) (*MsgCreateVerifiableCredentialResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateVerifiableCredential not implemented")
+func (*UnimplementedMsgServer) IssueVerifiableCredential(ctx context.Context, req *MsgIssueVerifiableCredential) (*MsgIssueVerifiableCredentialResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IssueVerifiableCredential not implemented")
 }
-func (*UnimplementedMsgServer) CreaRevokeVerifiableCredential(ctx context.Context, req *MsgCreaRevokeVerifiableCredential) (*MsgCreaRevokeVerifiableCredentialResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreaRevokeVerifiableCredential not implemented")
+func (*UnimplementedMsgServer) RevokeVerifiableCredential(ctx context.Context, req *MsgRevokeVerifiableCredential) (*MsgRevokeVerifiableCredentialResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeVerifiableCredential not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_CreateVerifiableCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateVerifiableCredential)
+func _Msg_IssueVerifiableCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgIssueVerifiableCredential)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateVerifiableCredential(ctx, in)
+		return srv.(MsgServer).IssueVerifiableCredential(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stan14100.ngi.vc.Msg/CreateVerifiableCredential",
+		FullMethod: "/stan14100.ngi.vc.Msg/IssueVerifiableCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateVerifiableCredential(ctx, req.(*MsgCreateVerifiableCredential))
+		return srv.(MsgServer).IssueVerifiableCredential(ctx, req.(*MsgIssueVerifiableCredential))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreaRevokeVerifiableCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreaRevokeVerifiableCredential)
+func _Msg_RevokeVerifiableCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeVerifiableCredential)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreaRevokeVerifiableCredential(ctx, in)
+		return srv.(MsgServer).RevokeVerifiableCredential(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stan14100.ngi.vc.Msg/CreaRevokeVerifiableCredential",
+		FullMethod: "/stan14100.ngi.vc.Msg/RevokeVerifiableCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreaRevokeVerifiableCredential(ctx, req.(*MsgCreaRevokeVerifiableCredential))
+		return srv.(MsgServer).RevokeVerifiableCredential(ctx, req.(*MsgRevokeVerifiableCredential))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -343,19 +339,19 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateVerifiableCredential",
-			Handler:    _Msg_CreateVerifiableCredential_Handler,
+			MethodName: "IssueVerifiableCredential",
+			Handler:    _Msg_IssueVerifiableCredential_Handler,
 		},
 		{
-			MethodName: "CreaRevokeVerifiableCredential",
-			Handler:    _Msg_CreaRevokeVerifiableCredential_Handler,
+			MethodName: "RevokeVerifiableCredential",
+			Handler:    _Msg_RevokeVerifiableCredential_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "vc/tx.proto",
 }
 
-func (m *MsgCreateVerifiableCredential) Marshal() (dAtA []byte, err error) {
+func (m *MsgIssueVerifiableCredential) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -365,12 +361,12 @@ func (m *MsgCreateVerifiableCredential) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateVerifiableCredential) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgIssueVerifiableCredential) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgIssueVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -397,7 +393,7 @@ func (m *MsgCreateVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateVerifiableCredentialResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgIssueVerifiableCredentialResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -407,12 +403,12 @@ func (m *MsgCreateVerifiableCredentialResponse) Marshal() (dAtA []byte, err erro
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateVerifiableCredentialResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgIssueVerifiableCredentialResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgIssueVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -420,7 +416,7 @@ func (m *MsgCreateVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeVerifiableCredential) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -430,12 +426,12 @@ func (m *MsgCreaRevokeVerifiableCredential) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeVerifiableCredential) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -457,7 +453,7 @@ func (m *MsgCreaRevokeVerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreaRevokeVerifiableCredentialResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeVerifiableCredentialResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -467,12 +463,12 @@ func (m *MsgCreaRevokeVerifiableCredentialResponse) Marshal() (dAtA []byte, err 
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreaRevokeVerifiableCredentialResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeVerifiableCredentialResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreaRevokeVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeVerifiableCredentialResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -491,7 +487,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgCreateVerifiableCredential) Size() (n int) {
+func (m *MsgIssueVerifiableCredential) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -508,7 +504,7 @@ func (m *MsgCreateVerifiableCredential) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateVerifiableCredentialResponse) Size() (n int) {
+func (m *MsgIssueVerifiableCredentialResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -517,7 +513,7 @@ func (m *MsgCreateVerifiableCredentialResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreaRevokeVerifiableCredential) Size() (n int) {
+func (m *MsgRevokeVerifiableCredential) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -534,7 +530,7 @@ func (m *MsgCreaRevokeVerifiableCredential) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreaRevokeVerifiableCredentialResponse) Size() (n int) {
+func (m *MsgRevokeVerifiableCredentialResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -549,7 +545,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgCreateVerifiableCredential) Unmarshal(dAtA []byte) error {
+func (m *MsgIssueVerifiableCredential) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -572,10 +568,10 @@ func (m *MsgCreateVerifiableCredential) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateVerifiableCredential: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgIssueVerifiableCredential: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateVerifiableCredential: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgIssueVerifiableCredential: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -667,7 +663,7 @@ func (m *MsgCreateVerifiableCredential) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgIssueVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -690,10 +686,10 @@ func (m *MsgCreateVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateVerifiableCredentialResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgIssueVerifiableCredentialResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateVerifiableCredentialResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgIssueVerifiableCredentialResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -717,7 +713,7 @@ func (m *MsgCreateVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreaRevokeVerifiableCredential) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeVerifiableCredential) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -740,10 +736,10 @@ func (m *MsgCreaRevokeVerifiableCredential) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreaRevokeVerifiableCredential: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeVerifiableCredential: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreaRevokeVerifiableCredential: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeVerifiableCredential: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -831,7 +827,7 @@ func (m *MsgCreaRevokeVerifiableCredential) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreaRevokeVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeVerifiableCredentialResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -854,10 +850,10 @@ func (m *MsgCreaRevokeVerifiableCredentialResponse) Unmarshal(dAtA []byte) error
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreaRevokeVerifiableCredentialResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeVerifiableCredentialResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreaRevokeVerifiableCredentialResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeVerifiableCredentialResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

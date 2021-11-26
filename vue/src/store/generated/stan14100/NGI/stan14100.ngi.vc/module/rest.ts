@@ -34,9 +34,9 @@ export interface VcInfo {
   vat?: string;
 }
 
-export type VcMsgCreaRevokeVerifiableCredentialResponse = object;
+export type VcMsgIssueVerifiableCredentialResponse = object;
 
-export type VcMsgCreateVerifiableCredentialResponse = object;
+export type VcMsgRevokeVerifiableCredentialResponse = object;
 
 /**
 * A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.

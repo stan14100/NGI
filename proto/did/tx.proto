@@ -8,18 +8,25 @@ import "did/did.proto";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc CreateDidDocument(MsgCreateDidDocument) returns (MsgCreateDidDocumentResponse);
+  rpc CreateDidDocument(MsgCreateDidDocument) returns (MsgCreateDidDocumentResponse);
   rpc UpdateDidDocument(MsgUpdateDidDocument) returns (MsgUpdateDidDocumentResponse);
   rpc AddService(MsgAddService) returns (MsgAddServiceResponse);
-  rpc DeleteService(MsgDeleteService) returns (MsgDeleteServiceResponse);
+  rpc RemoveService(MsgRemoveService) returns (MsgRemoveServiceResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+// Verification is a message/type for assigning verification methods to dids
+message Verification {
+  VerificationMethod method        = 1; 
+  repeated string    relationships = 2; 
 }
 
 message MsgCreateDidDocument {
   string creator = 1;
   string id = 2;
   string controller = 3;
-  repeated Service services = 4;
+  repeated Verification verifications  = 4;
+  repeated Service services = 5;
 }
 
 message MsgCreateDidDocumentResponse {
@@ -43,13 +50,13 @@ message MsgAddService {
 message MsgAddServiceResponse {
 }
 
-message MsgDeleteService {
+message MsgRemoveService {
   string creator = 1;
   string id = 2;
   string serviceId = 3;
 }
 
-message MsgDeleteServiceResponse {
+message MsgRemoveServiceResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

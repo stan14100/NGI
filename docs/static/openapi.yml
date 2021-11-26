@@ -12501,6 +12501,234 @@ paths:
                         }
       tags:
         - Query
+  /stan14100/ngi/did/dids:
+    get:
+      summary: Queries a list of dids items.
+      operationId: Stan14100NgiDidDids
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              didDocuments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    context:
+                      type: array
+                      items:
+                        type: string
+                      description: '@context is spec for did document.'
+                    id:
+                      type: string
+                      description: id represents the id for the did document.
+                    controller:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        A DID controller is an entity that is authorized to make
+                        changes to a DID document.
+
+                        https://www.w3.org/TR/did-core/#did-controller
+                    verificationMethod:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyHex:
+                            type: string
+                          publicKeyMultibase:
+                            type: string
+                        title: 'https://www.w3.org/TR/did-core/#verification-methods'
+                      title: >-
+                        A DID document can express verification methods, 
+
+                        such as cryptographic public keys, which can be used 
+
+                        to authenticate or authorize interactions with the DID
+                        subject or associated parties.
+
+                        https://www.w3.org/TR/did-core/#verification-methods
+                    service:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          serviceEndpoint:
+                            type: string
+                        title: 'https://www.w3.org/TR/did-core/#service-properties'
+                      title: >-
+                        Services are used in DID documents to express ways of
+                        communicating with the DID subject or associated
+                        entities.
+
+                        https://www.w3.org/TR/did-core/#services
+                    authentication:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        Authentication represents public key associated with the
+                        did document.
+
+                        https://www.w3.org/TR/did-core/#authentication
+                    assertionMethod:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        Used to specify how the DID subject is expected to
+                        express claims, such as for the purposes of issuing a
+                        Verifiable Credential.
+
+                        https://www.w3.org/TR/did-core/#assertion
+                    keyAgreement:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        used to specify how an entity can generate encryption
+                        material in order to transmit confidential information
+                        intended for the DID subject.
+
+                        https://www.w3.org/TR/did-core/#key-agreement
+                    capabilityInvocation:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        Used to specify a verification method that might be used
+                        by the DID subject to invoke a cryptographic
+                        capability,  
+
+                        such as the authorization to update the DID Document.
+
+                        https://www.w3.org/TR/did-core/#capability-invocation
+                    capabilityDelegation:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        Used to specify a mechanism that might be used by the
+                        DID subject to delegate a cryptographic capability to
+                        another party.
+
+                        https://www.w3.org/TR/did-core/#capability-delegation
+                  title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
 definitions:
   cosmos.authz.v1beta1.Grant:
     type: object
@@ -19815,14 +20043,265 @@ definitions:
       and
 
       freezing clients
+  stan14100.ngi.did.DidDocument:
+    type: object
+    properties:
+      context:
+        type: array
+        items:
+          type: string
+        description: '@context is spec for did document.'
+      id:
+        type: string
+        description: id represents the id for the did document.
+      controller:
+        type: array
+        items:
+          type: string
+        title: >-
+          A DID controller is an entity that is authorized to make changes to a
+          DID document.
+
+          https://www.w3.org/TR/did-core/#did-controller
+      verificationMethod:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            controller:
+              type: string
+            publicKeyHex:
+              type: string
+            publicKeyMultibase:
+              type: string
+          title: 'https://www.w3.org/TR/did-core/#verification-methods'
+        title: >-
+          A DID document can express verification methods, 
+
+          such as cryptographic public keys, which can be used 
+
+          to authenticate or authorize interactions with the DID subject or
+          associated parties.
+
+          https://www.w3.org/TR/did-core/#verification-methods
+      service:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            serviceEndpoint:
+              type: string
+          title: 'https://www.w3.org/TR/did-core/#service-properties'
+        title: >-
+          Services are used in DID documents to express ways of communicating
+          with the DID subject or associated entities.
+
+          https://www.w3.org/TR/did-core/#services
+      authentication:
+        type: array
+        items:
+          type: string
+        title: |-
+          Authentication represents public key associated with the did document.
+          https://www.w3.org/TR/did-core/#authentication
+      assertionMethod:
+        type: array
+        items:
+          type: string
+        title: >-
+          Used to specify how the DID subject is expected to express claims,
+          such as for the purposes of issuing a Verifiable Credential.
+
+          https://www.w3.org/TR/did-core/#assertion
+      keyAgreement:
+        type: array
+        items:
+          type: string
+        title: >-
+          used to specify how an entity can generate encryption material in
+          order to transmit confidential information intended for the DID
+          subject.
+
+          https://www.w3.org/TR/did-core/#key-agreement
+      capabilityInvocation:
+        type: array
+        items:
+          type: string
+        title: >-
+          Used to specify a verification method that might be used by the DID
+          subject to invoke a cryptographic capability,  
+
+          such as the authorization to update the DID Document.
+
+          https://www.w3.org/TR/did-core/#capability-invocation
+      capabilityDelegation:
+        type: array
+        items:
+          type: string
+        title: >-
+          Used to specify a mechanism that might be used by the DID subject to
+          delegate a cryptographic capability to another party.
+
+          https://www.w3.org/TR/did-core/#capability-delegation
+    title: 'https://www.w3.org/TR/did-core/#did-document-properties'
   stan14100.ngi.did.MsgAddServiceResponse:
     type: object
   stan14100.ngi.did.MsgCreateDidDocumentResponse:
     type: object
-  stan14100.ngi.did.MsgDeleteServiceResponse:
+  stan14100.ngi.did.MsgRemoveServiceResponse:
     type: object
   stan14100.ngi.did.MsgUpdateDidDocumentResponse:
     type: object
+  stan14100.ngi.did.QueryDidsResponse:
+    type: object
+    properties:
+      didDocuments:
+        type: array
+        items:
+          type: object
+          properties:
+            context:
+              type: array
+              items:
+                type: string
+              description: '@context is spec for did document.'
+            id:
+              type: string
+              description: id represents the id for the did document.
+            controller:
+              type: array
+              items:
+                type: string
+              title: >-
+                A DID controller is an entity that is authorized to make changes
+                to a DID document.
+
+                https://www.w3.org/TR/did-core/#did-controller
+            verificationMethod:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  controller:
+                    type: string
+                  publicKeyHex:
+                    type: string
+                  publicKeyMultibase:
+                    type: string
+                title: 'https://www.w3.org/TR/did-core/#verification-methods'
+              title: >-
+                A DID document can express verification methods, 
+
+                such as cryptographic public keys, which can be used 
+
+                to authenticate or authorize interactions with the DID subject
+                or associated parties.
+
+                https://www.w3.org/TR/did-core/#verification-methods
+            service:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  serviceEndpoint:
+                    type: string
+                title: 'https://www.w3.org/TR/did-core/#service-properties'
+              title: >-
+                Services are used in DID documents to express ways of
+                communicating with the DID subject or associated entities.
+
+                https://www.w3.org/TR/did-core/#services
+            authentication:
+              type: array
+              items:
+                type: string
+              title: >-
+                Authentication represents public key associated with the did
+                document.
+
+                https://www.w3.org/TR/did-core/#authentication
+            assertionMethod:
+              type: array
+              items:
+                type: string
+              title: >-
+                Used to specify how the DID subject is expected to express
+                claims, such as for the purposes of issuing a Verifiable
+                Credential.
+
+                https://www.w3.org/TR/did-core/#assertion
+            keyAgreement:
+              type: array
+              items:
+                type: string
+              title: >-
+                used to specify how an entity can generate encryption material
+                in order to transmit confidential information intended for the
+                DID subject.
+
+                https://www.w3.org/TR/did-core/#key-agreement
+            capabilityInvocation:
+              type: array
+              items:
+                type: string
+              title: >-
+                Used to specify a verification method that might be used by the
+                DID subject to invoke a cryptographic capability,  
+
+                such as the authorization to update the DID Document.
+
+                https://www.w3.org/TR/did-core/#capability-invocation
+            capabilityDelegation:
+              type: array
+              items:
+                type: string
+              title: >-
+                Used to specify a mechanism that might be used by the DID
+                subject to delegate a cryptographic capability to another party.
+
+                https://www.w3.org/TR/did-core/#capability-delegation
+          title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   stan14100.ngi.did.Service:
     type: object
     properties:
@@ -19833,6 +20312,42 @@ definitions:
       serviceEndpoint:
         type: string
     title: 'https://www.w3.org/TR/did-core/#service-properties'
+  stan14100.ngi.did.Verification:
+    type: object
+    properties:
+      method:
+        type: object
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+          controller:
+            type: string
+          publicKeyHex:
+            type: string
+          publicKeyMultibase:
+            type: string
+        title: 'https://www.w3.org/TR/did-core/#verification-methods'
+      relationships:
+        type: array
+        items:
+          type: string
+    title: Verification is a message/type for assigning verification methods to dids
+  stan14100.ngi.did.VerificationMethod:
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      controller:
+        type: string
+      publicKeyHex:
+        type: string
+      publicKeyMultibase:
+        type: string
+    title: 'https://www.w3.org/TR/did-core/#verification-methods'
   stan14100.ngi.vc.HealthCenterSubject:
     type: object
     properties:
@@ -19867,9 +20382,9 @@ definitions:
         type: string
       vat:
         type: string
-  stan14100.ngi.vc.MsgCreaRevokeVerifiableCredentialResponse:
+  stan14100.ngi.vc.MsgIssueVerifiableCredentialResponse:
     type: object
-  stan14100.ngi.vc.MsgCreateVerifiableCredentialResponse:
+  stan14100.ngi.vc.MsgRevokeVerifiableCredentialResponse:
     type: object
   stan14100.ngi.vc.Proof:
     type: object

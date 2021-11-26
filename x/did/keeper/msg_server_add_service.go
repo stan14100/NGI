@@ -31,6 +31,11 @@ func (k msgServer) AddService(goCtx context.Context, msg *types.MsgAddService) (
 
 	// store the did Document to store
 	k.Keeper.AddDidDocument(ctx, []byte(msg.Id), didDoc)
+
+	if err := updateDidMetadata(&k.Keeper, ctx, didDoc.Id); err != nil {
+		k.Logger(ctx).Error(err.Error(), "did", didDoc.Id)
+	}
+
 	k.Logger(ctx).Info("Service added to the did document with id:%s and controller:%s", msg.Id, msg.Creator)
 
 	return &types.MsgAddServiceResponse{}, nil

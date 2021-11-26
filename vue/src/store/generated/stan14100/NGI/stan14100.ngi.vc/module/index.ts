@@ -4,13 +4,13 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateVerifiableCredential } from "./types/vc/tx";
-import { MsgCreaRevokeVerifiableCredential } from "./types/vc/tx";
+import { MsgIssueVerifiableCredential } from "./types/vc/tx";
+import { MsgRevokeVerifiableCredential } from "./types/vc/tx";
 
 
 const types = [
-  ["/stan14100.ngi.vc.MsgCreateVerifiableCredential", MsgCreateVerifiableCredential],
-  ["/stan14100.ngi.vc.MsgCreaRevokeVerifiableCredential", MsgCreaRevokeVerifiableCredential],
+  ["/stan14100.ngi.vc.MsgIssueVerifiableCredential", MsgIssueVerifiableCredential],
+  ["/stan14100.ngi.vc.MsgRevokeVerifiableCredential", MsgRevokeVerifiableCredential],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,8 +39,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreateVerifiableCredential: (data: MsgCreateVerifiableCredential): EncodeObject => ({ typeUrl: "/stan14100.ngi.vc.MsgCreateVerifiableCredential", value: data }),
-    msgCreaRevokeVerifiableCredential: (data: MsgCreaRevokeVerifiableCredential): EncodeObject => ({ typeUrl: "/stan14100.ngi.vc.MsgCreaRevokeVerifiableCredential", value: data }),
+    msgIssueVerifiableCredential: (data: MsgIssueVerifiableCredential): EncodeObject => ({ typeUrl: "/stan14100.ngi.vc.MsgIssueVerifiableCredential", value: data }),
+    msgRevokeVerifiableCredential: (data: MsgRevokeVerifiableCredential): EncodeObject => ({ typeUrl: "/stan14100.ngi.vc.MsgRevokeVerifiableCredential", value: data }),
     
   };
 };

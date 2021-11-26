@@ -5,25 +5,25 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgDeleteService{}
+var _ sdk.Msg = &MsgRemoveService{}
 
-func NewMsgDeleteService(creator string, id string, serviceId string) *MsgDeleteService {
-	return &MsgDeleteService{
+func NewMsgRemoveService(creator string, id string, serviceId string) *MsgRemoveService {
+	return &MsgRemoveService{
 		Creator:   creator,
 		Id:        id,
 		ServiceId: serviceId,
 	}
 }
 
-func (msg *MsgDeleteService) Route() string {
+func (msg *MsgRemoveService) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgDeleteService) Type() string {
-	return "DeleteService"
+func (msg *MsgRemoveService) Type() string {
+	return "RemoveService"
 }
 
-func (msg *MsgDeleteService) GetSigners() []sdk.AccAddress {
+func (msg *MsgRemoveService) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -31,12 +31,12 @@ func (msg *MsgDeleteService) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgDeleteService) GetSignBytes() []byte {
+func (msg *MsgRemoveService) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgDeleteService) ValidateBasic() error {
+func (msg *MsgRemoveService) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

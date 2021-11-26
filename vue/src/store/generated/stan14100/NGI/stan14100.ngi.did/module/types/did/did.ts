@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Timestamp } from '../google/protobuf/timestamp'
 import { Writer, Reader } from 'protobufjs/minimal'
 
 export const protobufPackage = 'stan14100.ngi.did'
@@ -11,9 +12,16 @@ export interface DidDocument {
   id: string
   /**
    * A DID controller is an entity that is authorized to make changes to a DID document.
-   * cfr. https://www.w3.org/TR/did-core/#did-controller
+   * https://www.w3.org/TR/did-core/#did-controller
    */
   controller: string[]
+  /**
+   * A DID document can express verification methods,
+   * such as cryptographic public keys, which can be used
+   * to authenticate or authorize interactions with the DID subject or associated parties.
+   * https://www.w3.org/TR/did-core/#verification-methods
+   */
+  verificationMethod: VerificationMethod[]
   /**
    * Services are used in DID documents to express ways of communicating with the DID subject or associated entities.
    * https://www.w3.org/TR/did-core/#services
@@ -47,11 +55,26 @@ export interface DidDocument {
   capabilityDelegation: string[]
 }
 
+/** https://www.w3.org/TR/did-core/#verification-methods */
+export interface VerificationMethod {
+  id: string
+  type: string
+  controller: string
+  publicKeyHex: string | undefined
+  publicKeyMultibase: string | undefined
+}
+
 /** https://www.w3.org/TR/did-core/#service-properties */
 export interface Service {
   id: string
   type: string
   serviceEndpoint: string
+}
+
+export interface DidMetadata {
+  versionId: string
+  createdTimestamp: Date | undefined
+  updatedTimestamp: Date | undefined
 }
 
 const baseDidDocument: object = {
@@ -75,6 +98,9 @@ export const DidDocument = {
     }
     for (const v of message.controller) {
       writer.uint32(26).string(v!)
+    }
+    for (const v of message.verificationMethod) {
+      VerificationMethod.encode(v!, writer.uint32(34).fork()).ldelim()
     }
     for (const v of message.service) {
       Service.encode(v!, writer.uint32(42).fork()).ldelim()
@@ -103,6 +129,7 @@ export const DidDocument = {
     const message = { ...baseDidDocument } as DidDocument
     message.context = []
     message.controller = []
+    message.verificationMethod = []
     message.service = []
     message.authentication = []
     message.assertionMethod = []
@@ -120,6 +147,9 @@ export const DidDocument = {
           break
         case 3:
           message.controller.push(reader.string())
+          break
+        case 4:
+          message.verificationMethod.push(VerificationMethod.decode(reader, reader.uint32()))
           break
         case 5:
           message.service.push(Service.decode(reader, reader.uint32()))
@@ -151,6 +181,7 @@ export const DidDocument = {
     const message = { ...baseDidDocument } as DidDocument
     message.context = []
     message.controller = []
+    message.verificationMethod = []
     message.service = []
     message.authentication = []
     message.assertionMethod = []
@@ -170,6 +201,11 @@ export const DidDocument = {
     if (object.controller !== undefined && object.controller !== null) {
       for (const e of object.controller) {
         message.controller.push(String(e))
+      }
+    }
+    if (object.verificationMethod !== undefined && object.verificationMethod !== null) {
+      for (const e of object.verificationMethod) {
+        message.verificationMethod.push(VerificationMethod.fromJSON(e))
       }
     }
     if (object.service !== undefined && object.service !== null) {
@@ -218,6 +254,11 @@ export const DidDocument = {
     } else {
       obj.controller = []
     }
+    if (message.verificationMethod) {
+      obj.verificationMethod = message.verificationMethod.map((e) => (e ? VerificationMethod.toJSON(e) : undefined))
+    } else {
+      obj.verificationMethod = []
+    }
     if (message.service) {
       obj.service = message.service.map((e) => (e ? Service.toJSON(e) : undefined))
     } else {
@@ -255,6 +296,7 @@ export const DidDocument = {
     const message = { ...baseDidDocument } as DidDocument
     message.context = []
     message.controller = []
+    message.verificationMethod = []
     message.service = []
     message.authentication = []
     message.assertionMethod = []
@@ -274,6 +316,11 @@ export const DidDocument = {
     if (object.controller !== undefined && object.controller !== null) {
       for (const e of object.controller) {
         message.controller.push(e)
+      }
+    }
+    if (object.verificationMethod !== undefined && object.verificationMethod !== null) {
+      for (const e of object.verificationMethod) {
+        message.verificationMethod.push(VerificationMethod.fromPartial(e))
       }
     }
     if (object.service !== undefined && object.service !== null) {
@@ -305,6 +352,129 @@ export const DidDocument = {
       for (const e of object.capabilityDelegation) {
         message.capabilityDelegation.push(e)
       }
+    }
+    return message
+  }
+}
+
+const baseVerificationMethod: object = { id: '', type: '', controller: '' }
+
+export const VerificationMethod = {
+  encode(message: VerificationMethod, writer: Writer = Writer.create()): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id)
+    }
+    if (message.type !== '') {
+      writer.uint32(18).string(message.type)
+    }
+    if (message.controller !== '') {
+      writer.uint32(26).string(message.controller)
+    }
+    if (message.publicKeyHex !== undefined) {
+      writer.uint32(34).string(message.publicKeyHex)
+    }
+    if (message.publicKeyMultibase !== undefined) {
+      writer.uint32(42).string(message.publicKeyMultibase)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): VerificationMethod {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseVerificationMethod } as VerificationMethod
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string()
+          break
+        case 2:
+          message.type = reader.string()
+          break
+        case 3:
+          message.controller = reader.string()
+          break
+        case 4:
+          message.publicKeyHex = reader.string()
+          break
+        case 5:
+          message.publicKeyMultibase = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): VerificationMethod {
+    const message = { ...baseVerificationMethod } as VerificationMethod
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id)
+    } else {
+      message.id = ''
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = String(object.type)
+    } else {
+      message.type = ''
+    }
+    if (object.controller !== undefined && object.controller !== null) {
+      message.controller = String(object.controller)
+    } else {
+      message.controller = ''
+    }
+    if (object.publicKeyHex !== undefined && object.publicKeyHex !== null) {
+      message.publicKeyHex = String(object.publicKeyHex)
+    } else {
+      message.publicKeyHex = undefined
+    }
+    if (object.publicKeyMultibase !== undefined && object.publicKeyMultibase !== null) {
+      message.publicKeyMultibase = String(object.publicKeyMultibase)
+    } else {
+      message.publicKeyMultibase = undefined
+    }
+    return message
+  },
+
+  toJSON(message: VerificationMethod): unknown {
+    const obj: any = {}
+    message.id !== undefined && (obj.id = message.id)
+    message.type !== undefined && (obj.type = message.type)
+    message.controller !== undefined && (obj.controller = message.controller)
+    message.publicKeyHex !== undefined && (obj.publicKeyHex = message.publicKeyHex)
+    message.publicKeyMultibase !== undefined && (obj.publicKeyMultibase = message.publicKeyMultibase)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<VerificationMethod>): VerificationMethod {
+    const message = { ...baseVerificationMethod } as VerificationMethod
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id
+    } else {
+      message.id = ''
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type
+    } else {
+      message.type = ''
+    }
+    if (object.controller !== undefined && object.controller !== null) {
+      message.controller = object.controller
+    } else {
+      message.controller = ''
+    }
+    if (object.publicKeyHex !== undefined && object.publicKeyHex !== null) {
+      message.publicKeyHex = object.publicKeyHex
+    } else {
+      message.publicKeyHex = undefined
+    }
+    if (object.publicKeyMultibase !== undefined && object.publicKeyMultibase !== null) {
+      message.publicKeyMultibase = object.publicKeyMultibase
+    } else {
+      message.publicKeyMultibase = undefined
     }
     return message
   }
@@ -399,6 +569,95 @@ export const Service = {
   }
 }
 
+const baseDidMetadata: object = { versionId: '' }
+
+export const DidMetadata = {
+  encode(message: DidMetadata, writer: Writer = Writer.create()): Writer {
+    if (message.versionId !== '') {
+      writer.uint32(10).string(message.versionId)
+    }
+    if (message.createdTimestamp !== undefined) {
+      Timestamp.encode(toTimestamp(message.createdTimestamp), writer.uint32(18).fork()).ldelim()
+    }
+    if (message.updatedTimestamp !== undefined) {
+      Timestamp.encode(toTimestamp(message.updatedTimestamp), writer.uint32(26).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): DidMetadata {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseDidMetadata } as DidMetadata
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.versionId = reader.string()
+          break
+        case 2:
+          message.createdTimestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()))
+          break
+        case 3:
+          message.updatedTimestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()))
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): DidMetadata {
+    const message = { ...baseDidMetadata } as DidMetadata
+    if (object.versionId !== undefined && object.versionId !== null) {
+      message.versionId = String(object.versionId)
+    } else {
+      message.versionId = ''
+    }
+    if (object.createdTimestamp !== undefined && object.createdTimestamp !== null) {
+      message.createdTimestamp = fromJsonTimestamp(object.createdTimestamp)
+    } else {
+      message.createdTimestamp = undefined
+    }
+    if (object.updatedTimestamp !== undefined && object.updatedTimestamp !== null) {
+      message.updatedTimestamp = fromJsonTimestamp(object.updatedTimestamp)
+    } else {
+      message.updatedTimestamp = undefined
+    }
+    return message
+  },
+
+  toJSON(message: DidMetadata): unknown {
+    const obj: any = {}
+    message.versionId !== undefined && (obj.versionId = message.versionId)
+    message.createdTimestamp !== undefined && (obj.createdTimestamp = message.createdTimestamp !== undefined ? message.createdTimestamp.toISOString() : null)
+    message.updatedTimestamp !== undefined && (obj.updatedTimestamp = message.updatedTimestamp !== undefined ? message.updatedTimestamp.toISOString() : null)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<DidMetadata>): DidMetadata {
+    const message = { ...baseDidMetadata } as DidMetadata
+    if (object.versionId !== undefined && object.versionId !== null) {
+      message.versionId = object.versionId
+    } else {
+      message.versionId = ''
+    }
+    if (object.createdTimestamp !== undefined && object.createdTimestamp !== null) {
+      message.createdTimestamp = object.createdTimestamp
+    } else {
+      message.createdTimestamp = undefined
+    }
+    if (object.updatedTimestamp !== undefined && object.updatedTimestamp !== null) {
+      message.updatedTimestamp = object.updatedTimestamp
+    } else {
+      message.updatedTimestamp = undefined
+    }
+    return message
+  }
+}
+
 type Builtin = Date | Function | Uint8Array | string | number | undefined
 export type DeepPartial<T> = T extends Builtin
   ? T
@@ -409,3 +668,25 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000
+  const nanos = (date.getTime() % 1_000) * 1_000_000
+  return { seconds, nanos }
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000
+  millis += t.nanos / 1_000_000
+  return new Date(millis)
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o
+  } else if (typeof o === 'string') {
+    return new Date(o)
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o))
+  }
+}

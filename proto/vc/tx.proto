@@ -8,25 +8,25 @@ import "vc/vc.proto";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc CreateVerifiableCredential(MsgCreateVerifiableCredential) returns (MsgCreateVerifiableCredentialResponse);
-  rpc CreaRevokeVerifiableCredential(MsgCreaRevokeVerifiableCredential) returns (MsgCreaRevokeVerifiableCredentialResponse);
+  rpc IssueVerifiableCredential(MsgIssueVerifiableCredential) returns (MsgIssueVerifiableCredentialResponse);
+  rpc RevokeVerifiableCredential(MsgRevokeVerifiableCredential) returns (MsgRevokeVerifiableCredentialResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgCreateVerifiableCredential {
+message MsgIssueVerifiableCredential {
   string creator = 1;
   VerifiableCredential verifiableCredential = 2;
 }
 
-message MsgCreateVerifiableCredentialResponse {
+message MsgIssueVerifiableCredentialResponse {
 }
 
-message MsgCreaRevokeVerifiableCredential {
+message MsgRevokeVerifiableCredential {
   string creator = 1;
   string credentialId = 2;
 }
 
-message MsgCreaRevokeVerifiableCredentialResponse {
+message MsgRevokeVerifiableCredentialResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

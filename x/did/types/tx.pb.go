@@ -27,18 +27,72 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Verification is a message/type for assigning verification methods to dids
+type Verification struct {
+	Method        *VerificationMethod `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
+	Relationships []string            `protobuf:"bytes,2,rep,name=relationships,proto3" json:"relationships,omitempty"`
+}
+
+func (m *Verification) Reset()         { *m = Verification{} }
+func (m *Verification) String() string { return proto.CompactTextString(m) }
+func (*Verification) ProtoMessage()    {}
+func (*Verification) Descriptor() ([]byte, []int) {
+	return fileDescriptor_75f788725073a497, []int{0}
+}
+func (m *Verification) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Verification) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Verification.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Verification) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Verification.Merge(m, src)
+}
+func (m *Verification) XXX_Size() int {
+	return m.Size()
+}
+func (m *Verification) XXX_DiscardUnknown() {
+	xxx_messageInfo_Verification.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Verification proto.InternalMessageInfo
+
+func (m *Verification) GetMethod() *VerificationMethod {
+	if m != nil {
+		return m.Method
+	}
+	return nil
+}
+
+func (m *Verification) GetRelationships() []string {
+	if m != nil {
+		return m.Relationships
+	}
+	return nil
+}
+
 type MsgCreateDidDocument struct {
-	Creator    string     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Id         string     `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Controller string     `protobuf:"bytes,3,opt,name=controller,proto3" json:"controller,omitempty"`
-	Services   []*Service `protobuf:"bytes,4,rep,name=services,proto3" json:"services,omitempty"`
+	Creator       string          `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id            string          `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Controller    string          `protobuf:"bytes,3,opt,name=controller,proto3" json:"controller,omitempty"`
+	Verifications []*Verification `protobuf:"bytes,4,rep,name=verifications,proto3" json:"verifications,omitempty"`
+	Services      []*Service      `protobuf:"bytes,5,rep,name=services,proto3" json:"services,omitempty"`
 }
 
 func (m *MsgCreateDidDocument) Reset()         { *m = MsgCreateDidDocument{} }
 func (m *MsgCreateDidDocument) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateDidDocument) ProtoMessage()    {}
 func (*MsgCreateDidDocument) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{0}
+	return fileDescriptor_75f788725073a497, []int{1}
 }
 func (m *MsgCreateDidDocument) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -88,6 +142,13 @@ func (m *MsgCreateDidDocument) GetController() string {
 	return ""
 }
 
+func (m *MsgCreateDidDocument) GetVerifications() []*Verification {
+	if m != nil {
+		return m.Verifications
+	}
+	return nil
+}
+
 func (m *MsgCreateDidDocument) GetServices() []*Service {
 	if m != nil {
 		return m.Services
@@ -102,7 +163,7 @@ func (m *MsgCreateDidDocumentResponse) Reset()         { *m = MsgCreateDidDocume
 func (m *MsgCreateDidDocumentResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateDidDocumentResponse) ProtoMessage()    {}
 func (*MsgCreateDidDocumentResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{1}
+	return fileDescriptor_75f788725073a497, []int{2}
 }
 func (m *MsgCreateDidDocumentResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -141,7 +202,7 @@ func (m *MsgUpdateDidDocument) Reset()         { *m = MsgUpdateDidDocument{} }
 func (m *MsgUpdateDidDocument) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateDidDocument) ProtoMessage()    {}
 func (*MsgUpdateDidDocument) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{2}
+	return fileDescriptor_75f788725073a497, []int{3}
 }
 func (m *MsgUpdateDidDocument) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -198,7 +259,7 @@ func (m *MsgUpdateDidDocumentResponse) Reset()         { *m = MsgUpdateDidDocume
 func (m *MsgUpdateDidDocumentResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateDidDocumentResponse) ProtoMessage()    {}
 func (*MsgUpdateDidDocumentResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{3}
+	return fileDescriptor_75f788725073a497, []int{4}
 }
 func (m *MsgUpdateDidDocumentResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -237,7 +298,7 @@ func (m *MsgAddService) Reset()         { *m = MsgAddService{} }
 func (m *MsgAddService) String() string { return proto.CompactTextString(m) }
 func (*MsgAddService) ProtoMessage()    {}
 func (*MsgAddService) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{4}
+	return fileDescriptor_75f788725073a497, []int{5}
 }
 func (m *MsgAddService) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -294,7 +355,7 @@ func (m *MsgAddServiceResponse) Reset()         { *m = MsgAddServiceResponse{} }
 func (m *MsgAddServiceResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgAddServiceResponse) ProtoMessage()    {}
 func (*MsgAddServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{5}
+	return fileDescriptor_75f788725073a497, []int{6}
 }
 func (m *MsgAddServiceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -323,24 +384,24 @@ func (m *MsgAddServiceResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgAddServiceResponse proto.InternalMessageInfo
 
-type MsgDeleteService struct {
+type MsgRemoveService struct {
 	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Id        string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	ServiceId string `protobuf:"bytes,3,opt,name=serviceId,proto3" json:"serviceId,omitempty"`
 }
 
-func (m *MsgDeleteService) Reset()         { *m = MsgDeleteService{} }
-func (m *MsgDeleteService) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteService) ProtoMessage()    {}
-func (*MsgDeleteService) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{6}
+func (m *MsgRemoveService) Reset()         { *m = MsgRemoveService{} }
+func (m *MsgRemoveService) String() string { return proto.CompactTextString(m) }
+func (*MsgRemoveService) ProtoMessage()    {}
+func (*MsgRemoveService) Descriptor() ([]byte, []int) {
+	return fileDescriptor_75f788725073a497, []int{7}
 }
-func (m *MsgDeleteService) XXX_Unmarshal(b []byte) error {
+func (m *MsgRemoveService) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteService) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRemoveService) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteService.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRemoveService.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -350,54 +411,54 @@ func (m *MsgDeleteService) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteService) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteService.Merge(m, src)
+func (m *MsgRemoveService) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRemoveService.Merge(m, src)
 }
-func (m *MsgDeleteService) XXX_Size() int {
+func (m *MsgRemoveService) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteService) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteService.DiscardUnknown(m)
+func (m *MsgRemoveService) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRemoveService.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteService proto.InternalMessageInfo
+var xxx_messageInfo_MsgRemoveService proto.InternalMessageInfo
 
-func (m *MsgDeleteService) GetCreator() string {
+func (m *MsgRemoveService) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgDeleteService) GetId() string {
+func (m *MsgRemoveService) GetId() string {
 	if m != nil {
 		return m.Id
 	}
 	return ""
 }
 
-func (m *MsgDeleteService) GetServiceId() string {
+func (m *MsgRemoveService) GetServiceId() string {
 	if m != nil {
 		return m.ServiceId
 	}
 	return ""
 }
 
-type MsgDeleteServiceResponse struct {
+type MsgRemoveServiceResponse struct {
 }
 
-func (m *MsgDeleteServiceResponse) Reset()         { *m = MsgDeleteServiceResponse{} }
-func (m *MsgDeleteServiceResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteServiceResponse) ProtoMessage()    {}
-func (*MsgDeleteServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_75f788725073a497, []int{7}
+func (m *MsgRemoveServiceResponse) Reset()         { *m = MsgRemoveServiceResponse{} }
+func (m *MsgRemoveServiceResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRemoveServiceResponse) ProtoMessage()    {}
+func (*MsgRemoveServiceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_75f788725073a497, []int{8}
 }
-func (m *MsgDeleteServiceResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRemoveServiceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteServiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRemoveServiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteServiceResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRemoveServiceResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -407,59 +468,65 @@ func (m *MsgDeleteServiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteServiceResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteServiceResponse.Merge(m, src)
+func (m *MsgRemoveServiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRemoveServiceResponse.Merge(m, src)
 }
-func (m *MsgDeleteServiceResponse) XXX_Size() int {
+func (m *MsgRemoveServiceResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteServiceResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteServiceResponse.DiscardUnknown(m)
+func (m *MsgRemoveServiceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRemoveServiceResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteServiceResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRemoveServiceResponse proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*Verification)(nil), "stan14100.ngi.did.Verification")
 	proto.RegisterType((*MsgCreateDidDocument)(nil), "stan14100.ngi.did.MsgCreateDidDocument")
 	proto.RegisterType((*MsgCreateDidDocumentResponse)(nil), "stan14100.ngi.did.MsgCreateDidDocumentResponse")
 	proto.RegisterType((*MsgUpdateDidDocument)(nil), "stan14100.ngi.did.MsgUpdateDidDocument")
 	proto.RegisterType((*MsgUpdateDidDocumentResponse)(nil), "stan14100.ngi.did.MsgUpdateDidDocumentResponse")
 	proto.RegisterType((*MsgAddService)(nil), "stan14100.ngi.did.MsgAddService")
 	proto.RegisterType((*MsgAddServiceResponse)(nil), "stan14100.ngi.did.MsgAddServiceResponse")
-	proto.RegisterType((*MsgDeleteService)(nil), "stan14100.ngi.did.MsgDeleteService")
-	proto.RegisterType((*MsgDeleteServiceResponse)(nil), "stan14100.ngi.did.MsgDeleteServiceResponse")
+	proto.RegisterType((*MsgRemoveService)(nil), "stan14100.ngi.did.MsgRemoveService")
+	proto.RegisterType((*MsgRemoveServiceResponse)(nil), "stan14100.ngi.did.MsgRemoveServiceResponse")
 }
 
 func init() { proto.RegisterFile("did/tx.proto", fileDescriptor_75f788725073a497) }
 
 var fileDescriptor_75f788725073a497 = []byte{
-	// 410 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0x41, 0x6b, 0xe2, 0x40,
-	0x18, 0x86, 0x8d, 0x59, 0xd6, 0xf5, 0xdb, 0x75, 0x59, 0xc3, 0x2e, 0x1b, 0x82, 0x0c, 0x92, 0x5d,
-	0xa8, 0x50, 0x48, 0xd4, 0x4a, 0x8f, 0x85, 0xb6, 0x42, 0xf1, 0x90, 0x1e, 0x2c, 0x85, 0xe2, 0xa9,
-	0x9a, 0x19, 0xd2, 0x01, 0xcd, 0x84, 0xcc, 0x58, 0xec, 0xbf, 0xe8, 0xb1, 0xc7, 0xfe, 0x9c, 0x1e,
-	0x3d, 0xf6, 0x58, 0xf4, 0x8f, 0x14, 0x63, 0x12, 0x4d, 0x13, 0x5b, 0x85, 0x1e, 0xf3, 0xf1, 0xcc,
-	0xbc, 0xcf, 0xcc, 0x1b, 0x06, 0x7e, 0x60, 0x8a, 0x4d, 0x31, 0x31, 0x3c, 0x9f, 0x09, 0xa6, 0x94,
-	0xb9, 0xe8, 0xbb, 0x8d, 0x56, 0xa3, 0x5e, 0x37, 0x5c, 0x87, 0x1a, 0x98, 0x62, 0xad, 0xb4, 0x00,
-	0x30, 0xc5, 0x4b, 0x42, 0x7f, 0x90, 0xe0, 0xb7, 0xc5, 0x9d, 0x53, 0x9f, 0xf4, 0x05, 0x69, 0x53,
-	0xdc, 0x66, 0xf6, 0x78, 0x44, 0x5c, 0xa1, 0xa8, 0x50, 0xb0, 0x17, 0x43, 0xe6, 0xab, 0x52, 0x55,
-	0xaa, 0x15, 0xbb, 0xd1, 0xa7, 0xf2, 0x13, 0xf2, 0x14, 0xab, 0xf9, 0x60, 0x98, 0xa7, 0x58, 0x41,
-	0x00, 0x36, 0x73, 0x85, 0xcf, 0x86, 0x43, 0xe2, 0xab, 0x72, 0x30, 0x5f, 0x9b, 0x28, 0x87, 0xf0,
-	0x8d, 0x13, 0xff, 0x96, 0xda, 0x84, 0xab, 0x5f, 0xaa, 0x72, 0xed, 0x7b, 0x53, 0x33, 0x52, 0x5e,
-	0xc6, 0xc5, 0x12, 0xe9, 0xc6, 0xac, 0x8e, 0xa0, 0x92, 0x65, 0xd6, 0x25, 0xdc, 0x63, 0x2e, 0x27,
-	0xfa, 0x75, 0x60, 0x7e, 0xe9, 0xe1, 0x4f, 0x33, 0x97, 0x93, 0xe6, 0xa1, 0x41, 0x2a, 0x21, 0x36,
-	0x60, 0x50, 0xb2, 0xb8, 0x73, 0x8c, 0x71, 0x28, 0xbf, 0x43, 0x74, 0x0b, 0x0a, 0xe1, 0x41, 0x83,
-	0x1b, 0x7b, 0xff, 0x4e, 0x22, 0x54, 0xff, 0x0b, 0x7f, 0x12, 0x81, 0xb1, 0x49, 0x0f, 0x7e, 0x59,
-	0xdc, 0x69, 0x93, 0x21, 0x11, 0x64, 0x77, 0x99, 0x0a, 0x14, 0xc3, 0x84, 0x0e, 0x0e, 0x0b, 0x5c,
-	0x0d, 0x74, 0x0d, 0xd4, 0xb7, 0x7b, 0x47, 0xb9, 0xcd, 0x47, 0x19, 0x64, 0x8b, 0x3b, 0xca, 0x08,
-	0xca, 0xe9, 0x5f, 0x68, 0x2f, 0xe3, 0x48, 0x59, 0x8d, 0x6a, 0xe6, 0x96, 0x60, 0x14, 0xbb, 0x88,
-	0x4b, 0xf7, 0xbe, 0x21, 0x2e, 0x05, 0x6e, 0x8a, 0xdb, 0xd8, 0xb3, 0x72, 0x05, 0xb0, 0x56, 0x72,
-	0x35, 0x7b, 0xf9, 0x8a, 0xd0, 0x6a, 0x1f, 0x11, 0xf1, 0xce, 0x7d, 0x28, 0x25, 0x4b, 0xfb, 0x97,
-	0xbd, 0x34, 0x01, 0x69, 0xfb, 0x5b, 0x40, 0x51, 0xc4, 0xc9, 0xd1, 0xd3, 0x0c, 0x49, 0xd3, 0x19,
-	0x92, 0x5e, 0x66, 0x48, 0xba, 0x9f, 0xa3, 0xdc, 0x74, 0x8e, 0x72, 0xcf, 0x73, 0x94, 0xeb, 0xfd,
-	0x77, 0xa8, 0xb8, 0x19, 0x0f, 0x0c, 0x9b, 0x8d, 0xcc, 0x78, 0x43, 0xf3, 0xfc, 0xac, 0x63, 0x4e,
-	0xcc, 0xe0, 0x19, 0xb9, 0xf3, 0x08, 0x1f, 0x7c, 0x0d, 0x1e, 0x8a, 0x83, 0xd7, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0xe6, 0x02, 0x0c, 0xc2, 0x5a, 0x04, 0x00, 0x00,
+	// 482 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0x86, 0xe3, 0x18, 0x5a, 0x32, 0xad, 0x11, 0x5d, 0x81, 0x58, 0x59, 0xd5, 0x12, 0x99, 0x22,
+	0x22, 0x21, 0xd9, 0x6d, 0xa8, 0xb8, 0x81, 0x04, 0x14, 0xa1, 0x1e, 0xcc, 0xc1, 0x08, 0x84, 0x7a,
+	0x22, 0xf5, 0x2e, 0xce, 0x4a, 0xb1, 0xd7, 0xda, 0xdd, 0x46, 0xe5, 0x2d, 0x78, 0x04, 0x1e, 0x87,
+	0x63, 0x8f, 0xdc, 0x40, 0xc9, 0x8b, 0xa0, 0x6c, 0x6d, 0x37, 0xc6, 0x0e, 0x6d, 0x25, 0x8e, 0x99,
+	0x7c, 0xf3, 0xff, 0xff, 0xcc, 0x58, 0x0b, 0x9b, 0x94, 0xd3, 0x40, 0x9f, 0xfa, 0xb9, 0x14, 0x5a,
+	0xa0, 0x2d, 0xa5, 0x47, 0xd9, 0xde, 0xfe, 0xde, 0xee, 0xae, 0x9f, 0x25, 0xdc, 0xa7, 0x9c, 0xba,
+	0xce, 0x02, 0xa0, 0x9c, 0x9e, 0x13, 0x9e, 0x82, 0xcd, 0x8f, 0x4c, 0xf2, 0x2f, 0x3c, 0x1e, 0x69,
+	0x2e, 0x32, 0xf4, 0x1c, 0xd6, 0x52, 0xa6, 0xc7, 0x82, 0x62, 0xab, 0x6f, 0x0d, 0x36, 0x86, 0x8f,
+	0xfc, 0x86, 0x84, 0xbf, 0xdc, 0x10, 0x1a, 0x38, 0x2a, 0x9a, 0xd0, 0x0e, 0x38, 0x92, 0x4d, 0xcc,
+	0x3f, 0x6a, 0xcc, 0x73, 0x85, 0xbb, 0x7d, 0x7b, 0xd0, 0x8b, 0xea, 0x45, 0xef, 0x97, 0x05, 0x77,
+	0x43, 0x95, 0xbc, 0x96, 0x6c, 0xa4, 0xd9, 0x01, 0xa7, 0x07, 0x22, 0x3e, 0x49, 0x59, 0xa6, 0x11,
+	0x86, 0xf5, 0x78, 0x51, 0x14, 0xd2, 0xd8, 0xf7, 0xa2, 0xf2, 0x27, 0xba, 0x0d, 0x5d, 0x4e, 0x71,
+	0xd7, 0x14, 0xbb, 0x9c, 0x22, 0x02, 0x10, 0x8b, 0x4c, 0x4b, 0x31, 0x99, 0x30, 0x89, 0x6d, 0x53,
+	0x5f, 0xaa, 0xa0, 0x37, 0xe0, 0x4c, 0x97, 0x62, 0x2a, 0x7c, 0xa3, 0x6f, 0x0f, 0x36, 0x86, 0x0f,
+	0x2e, 0x19, 0x27, 0xaa, 0x77, 0xa1, 0x67, 0x70, 0x4b, 0x31, 0x39, 0xe5, 0x31, 0x53, 0xf8, 0xa6,
+	0x51, 0x70, 0x5b, 0x14, 0xde, 0x9f, 0x23, 0x51, 0xc5, 0x7a, 0x04, 0xb6, 0xdb, 0x06, 0x8c, 0x98,
+	0xca, 0x45, 0xa6, 0x98, 0xf7, 0xd9, 0x2c, 0xe0, 0x43, 0x4e, 0xff, 0xdb, 0x02, 0xec, 0xfa, 0x02,
+	0x8a, 0x04, 0x0d, 0x87, 0x2a, 0x81, 0x00, 0x27, 0x54, 0xc9, 0x4b, 0x4a, 0x8b, 0xf0, 0xd7, 0xb0,
+	0xde, 0x87, 0xf5, 0x62, 0x50, 0xb3, 0xf8, 0x7f, 0xef, 0xa4, 0x44, 0xbd, 0xfb, 0x70, 0xaf, 0x66,
+	0x58, 0x25, 0x39, 0x82, 0x3b, 0xa1, 0x4a, 0x22, 0x96, 0x8a, 0x29, 0xbb, 0x7e, 0x98, 0x6d, 0xe8,
+	0x15, 0x0e, 0x87, 0xb4, 0xf8, 0x0e, 0x2e, 0x0a, 0x9e, 0x0b, 0xf8, 0x6f, 0xed, 0xd2, 0x77, 0xf8,
+	0xdd, 0x06, 0x3b, 0x54, 0x09, 0x4a, 0x61, 0xab, 0xf9, 0x25, 0x3e, 0x6e, 0x19, 0xa9, 0xed, 0xa2,
+	0x6e, 0x70, 0x45, 0xb0, 0xb4, 0x5d, 0xd8, 0x35, 0xef, 0xbe, 0xc2, 0xae, 0x01, 0xae, 0xb2, 0x5b,
+	0x79, 0x67, 0xf4, 0x09, 0x60, 0xe9, 0xc8, 0xfd, 0xf6, 0xf6, 0x0b, 0xc2, 0x1d, 0x5c, 0x46, 0x54,
+	0xca, 0x23, 0x70, 0xea, 0x47, 0x7b, 0xd8, 0xde, 0x5a, 0x83, 0xdc, 0x27, 0x57, 0x80, 0x4a, 0x8b,
+	0x57, 0x2f, 0x7e, 0xcc, 0x88, 0x75, 0x36, 0x23, 0xd6, 0xef, 0x19, 0xb1, 0xbe, 0xcd, 0x49, 0xe7,
+	0x6c, 0x4e, 0x3a, 0x3f, 0xe7, 0xa4, 0x73, 0xb4, 0x93, 0x70, 0x3d, 0x3e, 0x39, 0xf6, 0x63, 0x91,
+	0x06, 0x95, 0x60, 0xf0, 0xee, 0xed, 0x61, 0x70, 0x1a, 0x98, 0x27, 0xf0, 0x6b, 0xce, 0xd4, 0xf1,
+	0x9a, 0x79, 0xe4, 0x9e, 0xfe, 0x09, 0x00, 0x00, 0xff, 0xff, 0x6b, 0x39, 0x56, 0x50, 0x16, 0x05,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -477,7 +544,7 @@ type MsgClient interface {
 	CreateDidDocument(ctx context.Context, in *MsgCreateDidDocument, opts ...grpc.CallOption) (*MsgCreateDidDocumentResponse, error)
 	UpdateDidDocument(ctx context.Context, in *MsgUpdateDidDocument, opts ...grpc.CallOption) (*MsgUpdateDidDocumentResponse, error)
 	AddService(ctx context.Context, in *MsgAddService, opts ...grpc.CallOption) (*MsgAddServiceResponse, error)
-	DeleteService(ctx context.Context, in *MsgDeleteService, opts ...grpc.CallOption) (*MsgDeleteServiceResponse, error)
+	RemoveService(ctx context.Context, in *MsgRemoveService, opts ...grpc.CallOption) (*MsgRemoveServiceResponse, error)
 }
 
 type msgClient struct {
@@ -515,9 +582,9 @@ func (c *msgClient) AddService(ctx context.Context, in *MsgAddService, opts ...g
 	return out, nil
 }
 
-func (c *msgClient) DeleteService(ctx context.Context, in *MsgDeleteService, opts ...grpc.CallOption) (*MsgDeleteServiceResponse, error) {
-	out := new(MsgDeleteServiceResponse)
-	err := c.cc.Invoke(ctx, "/stan14100.ngi.did.Msg/DeleteService", in, out, opts...)
+func (c *msgClient) RemoveService(ctx context.Context, in *MsgRemoveService, opts ...grpc.CallOption) (*MsgRemoveServiceResponse, error) {
+	out := new(MsgRemoveServiceResponse)
+	err := c.cc.Invoke(ctx, "/stan14100.ngi.did.Msg/RemoveService", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -529,7 +596,7 @@ type MsgServer interface {
 	CreateDidDocument(context.Context, *MsgCreateDidDocument) (*MsgCreateDidDocumentResponse, error)
 	UpdateDidDocument(context.Context, *MsgUpdateDidDocument) (*MsgUpdateDidDocumentResponse, error)
 	AddService(context.Context, *MsgAddService) (*MsgAddServiceResponse, error)
-	DeleteService(context.Context, *MsgDeleteService) (*MsgDeleteServiceResponse, error)
+	RemoveService(context.Context, *MsgRemoveService) (*MsgRemoveServiceResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -545,8 +612,8 @@ func (*UnimplementedMsgServer) UpdateDidDocument(ctx context.Context, req *MsgUp
 func (*UnimplementedMsgServer) AddService(ctx context.Context, req *MsgAddService) (*MsgAddServiceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddService not implemented")
 }
-func (*UnimplementedMsgServer) DeleteService(ctx context.Context, req *MsgDeleteService) (*MsgDeleteServiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteService not implemented")
+func (*UnimplementedMsgServer) RemoveService(ctx context.Context, req *MsgRemoveService) (*MsgRemoveServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveService not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -607,20 +674,20 @@ func _Msg_AddService_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeleteService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteService)
+func _Msg_RemoveService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRemoveService)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeleteService(ctx, in)
+		return srv.(MsgServer).RemoveService(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stan14100.ngi.did.Msg/DeleteService",
+		FullMethod: "/stan14100.ngi.did.Msg/RemoveService",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteService(ctx, req.(*MsgDeleteService))
+		return srv.(MsgServer).RemoveService(ctx, req.(*MsgRemoveService))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -642,12 +709,56 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_AddService_Handler,
 		},
 		{
-			MethodName: "DeleteService",
-			Handler:    _Msg_DeleteService_Handler,
+			MethodName: "RemoveService",
+			Handler:    _Msg_RemoveService_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "did/tx.proto",
+}
+
+func (m *Verification) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Verification) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Verification) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Relationships) > 0 {
+		for iNdEx := len(m.Relationships) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Relationships[iNdEx])
+			copy(dAtA[i:], m.Relationships[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Relationships[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if m.Method != nil {
+		{
+			size, err := m.Method.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *MsgCreateDidDocument) Marshal() (dAtA []byte, err error) {
@@ -674,6 +785,20 @@ func (m *MsgCreateDidDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Services) - 1; iNdEx >= 0; iNdEx-- {
 			{
 				size, err := m.Services[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.Verifications) > 0 {
+		for iNdEx := len(m.Verifications) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Verifications[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -872,7 +997,7 @@ func (m *MsgAddServiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteService) Marshal() (dAtA []byte, err error) {
+func (m *MsgRemoveService) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -882,12 +1007,12 @@ func (m *MsgDeleteService) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteService) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRemoveService) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteService) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRemoveService) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -916,7 +1041,7 @@ func (m *MsgDeleteService) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteServiceResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRemoveServiceResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -926,12 +1051,12 @@ func (m *MsgDeleteServiceResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteServiceResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRemoveServiceResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteServiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRemoveServiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -950,6 +1075,25 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *Verification) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Method != nil {
+		l = m.Method.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Relationships) > 0 {
+		for _, s := range m.Relationships {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
 func (m *MsgCreateDidDocument) Size() (n int) {
 	if m == nil {
 		return 0
@@ -967,6 +1111,12 @@ func (m *MsgCreateDidDocument) Size() (n int) {
 	l = len(m.Controller)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Verifications) > 0 {
+		for _, e := range m.Verifications {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
 	}
 	if len(m.Services) > 0 {
 		for _, e := range m.Services {
@@ -1048,7 +1198,7 @@ func (m *MsgAddServiceResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeleteService) Size() (n int) {
+func (m *MsgRemoveService) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1069,7 +1219,7 @@ func (m *MsgDeleteService) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeleteServiceResponse) Size() (n int) {
+func (m *MsgRemoveServiceResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1083,6 +1233,124 @@ func sovTx(x uint64) (n int) {
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Verification) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Verification: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Verification: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Method", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Method == nil {
+				m.Method = &VerificationMethod{}
+			}
+			if err := m.Method.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Relationships", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Relationships = append(m.Relationships, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *MsgCreateDidDocument) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -1210,6 +1478,40 @@ func (m *MsgCreateDidDocument) Unmarshal(dAtA []byte) error {
 			m.Controller = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Verifications", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Verifications = append(m.Verifications, &Verification{})
+			if err := m.Verifications[len(m.Verifications)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Services", wireType)
 			}
@@ -1710,7 +2012,7 @@ func (m *MsgAddServiceResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteService) Unmarshal(dAtA []byte) error {
+func (m *MsgRemoveService) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1733,10 +2035,10 @@ func (m *MsgDeleteService) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteService: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRemoveService: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteService: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRemoveService: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1856,7 +2158,7 @@ func (m *MsgDeleteService) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteServiceResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRemoveServiceResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1879,10 +2181,10 @@ func (m *MsgDeleteServiceResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteServiceResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRemoveServiceResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteServiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRemoveServiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

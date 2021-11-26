@@ -7,12 +7,13 @@ import (
 
 var _ sdk.Msg = &MsgCreateDidDocument{}
 
-func NewMsgCreateDidDocument(creator string, id string, controller string, services []*Service) *MsgCreateDidDocument {
+func NewMsgCreateDidDocument(creator string, id string, controller string, verifications []*Verification, services []*Service) *MsgCreateDidDocument {
 	return &MsgCreateDidDocument{
-		Creator:    creator,
-		Id:         id,
-		Controller: controller,
-		Services:   services,
+		Creator:       creator,
+		Id:            id,
+		Controller:    controller,
+		Verifications: verifications,
+		Services:      services,
 	}
 }
 
@@ -21,7 +22,7 @@ func (msg *MsgCreateDidDocument) Route() string {
 }
 
 func (msg *MsgCreateDidDocument) Type() string {
-	return "CreateDidDocument"
+	return "create-did"
 }
 
 func (msg *MsgCreateDidDocument) GetSigners() []sdk.AccAddress {

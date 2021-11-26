@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdCreateVerifiableCredential() {
+func CmdIssueVerifiableCredential() {
 	// cmd := &cobra.Command{
 	// 	Use:   "create-verifiable-credential [verifiable-credential]",
-	// 	Short: "Broadcast message CreateVerifiableCredential",
+	// 	Short: "Broadcast message IssueVerifiableCredential",
 	// 	Args:  cobra.ExactArgs(1),
 	// 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 	//     		 argVerifiableCredential := args[0]
@@ -24,7 +24,7 @@ func CmdCreateVerifiableCredential() {
 	// 			return err
 	// 		}
 
-	// 		msg := types.NewMsgCreateVerifiableCredential(
+	// 		msg := types.NewMsgIssueVerifiableCredential(
 	// 			clientCtx.GetFromAddress().String(),
 	// 			argVerifiableCredential,
 

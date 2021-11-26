@@ -8,9 +8,16 @@ export interface DidDocument {
     id: string;
     /**
      * A DID controller is an entity that is authorized to make changes to a DID document.
-     * cfr. https://www.w3.org/TR/did-core/#did-controller
+     * https://www.w3.org/TR/did-core/#did-controller
      */
     controller: string[];
+    /**
+     * A DID document can express verification methods,
+     * such as cryptographic public keys, which can be used
+     * to authenticate or authorize interactions with the DID subject or associated parties.
+     * https://www.w3.org/TR/did-core/#verification-methods
+     */
+    verificationMethod: VerificationMethod[];
     /**
      * Services are used in DID documents to express ways of communicating with the DID subject or associated entities.
      * https://www.w3.org/TR/did-core/#services
@@ -43,11 +50,24 @@ export interface DidDocument {
      */
     capabilityDelegation: string[];
 }
+/** https://www.w3.org/TR/did-core/#verification-methods */
+export interface VerificationMethod {
+    id: string;
+    type: string;
+    controller: string;
+    publicKeyHex: string | undefined;
+    publicKeyMultibase: string | undefined;
+}
 /** https://www.w3.org/TR/did-core/#service-properties */
 export interface Service {
     id: string;
     type: string;
     serviceEndpoint: string;
+}
+export interface DidMetadata {
+    versionId: string;
+    createdTimestamp: Date | undefined;
+    updatedTimestamp: Date | undefined;
 }
 export declare const DidDocument: {
     encode(message: DidDocument, writer?: Writer): Writer;
@@ -56,12 +76,26 @@ export declare const DidDocument: {
     toJSON(message: DidDocument): unknown;
     fromPartial(object: DeepPartial<DidDocument>): DidDocument;
 };
+export declare const VerificationMethod: {
+    encode(message: VerificationMethod, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): VerificationMethod;
+    fromJSON(object: any): VerificationMethod;
+    toJSON(message: VerificationMethod): unknown;
+    fromPartial(object: DeepPartial<VerificationMethod>): VerificationMethod;
+};
 export declare const Service: {
     encode(message: Service, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): Service;
     fromJSON(object: any): Service;
     toJSON(message: Service): unknown;
     fromPartial(object: DeepPartial<Service>): Service;
+};
+export declare const DidMetadata: {
+    encode(message: DidMetadata, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): DidMetadata;
+    fromJSON(object: any): DidMetadata;
+    toJSON(message: DidMetadata): unknown;
+    fromPartial(object: DeepPartial<DidMetadata>): DidMetadata;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

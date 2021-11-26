@@ -360,6 +360,8 @@ func New(
 		appCodec,
 		keys[vcmoduletypes.StoreKey],
 		keys[vcmoduletypes.MemStoreKey],
+		app.DidKeeper,
+		app.AccountKeeper,
 	)
 	vcModule := vcmodule.NewAppModule(appCodec, app.VcKeeper)
 

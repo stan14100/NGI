@@ -11,4 +11,5 @@ var (
 	ErrSample                       = sdkerrors.Register(ModuleName, 1100, "sample error")
 	ErrVerifiableCredentialNotFound = sdkerrors.Register(ModuleName, 1101, "Vc not found")
 	ErrVerifiableCredentialFound    = sdkerrors.Register(ModuleName, 1102, "Vc found")
+	ErrMessageSigner                = sdkerrors.Register(ModuleName, 1103, "The signer of the message is not valid")
 )

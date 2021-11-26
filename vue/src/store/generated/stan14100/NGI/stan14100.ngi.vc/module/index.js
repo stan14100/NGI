@@ -2,11 +2,11 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateVerifiableCredential } from "./types/vc/tx";
-import { MsgCreaRevokeVerifiableCredential } from "./types/vc/tx";
+import { MsgIssueVerifiableCredential } from "./types/vc/tx";
+import { MsgRevokeVerifiableCredential } from "./types/vc/tx";
 const types = [
-    ["/stan14100.ngi.vc.MsgCreateVerifiableCredential", MsgCreateVerifiableCredential],
-    ["/stan14100.ngi.vc.MsgCreaRevokeVerifiableCredential", MsgCreaRevokeVerifiableCredential],
+    ["/stan14100.ngi.vc.MsgIssueVerifiableCredential", MsgIssueVerifiableCredential],
+    ["/stan14100.ngi.vc.MsgRevokeVerifiableCredential", MsgRevokeVerifiableCredential],
 ];
 export const MissingWalletError = new Error("wallet is required");
 const registry = new Registry(types);
@@ -21,8 +21,8 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
-        msgCreateVerifiableCredential: (data) => ({ typeUrl: "/stan14100.ngi.vc.MsgCreateVerifiableCredential", value: data }),
-        msgCreaRevokeVerifiableCredential: (data) => ({ typeUrl: "/stan14100.ngi.vc.MsgCreaRevokeVerifiableCredential", value: data }),
+        msgIssueVerifiableCredential: (data) => ({ typeUrl: "/stan14100.ngi.vc.MsgIssueVerifiableCredential", value: data }),
+        msgRevokeVerifiableCredential: (data) => ({ typeUrl: "/stan14100.ngi.vc.MsgRevokeVerifiableCredential", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {

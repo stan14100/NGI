@@ -8,17 +8,18 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreateVerifiableCredential{}, "vc/CreateVerifiableCredential", nil)
-	cdc.RegisterConcrete(&MsgCreaRevokeVerifiableCredential{}, "vc/CreaRevokeVerifiableCredential", nil)
+	cdc.RegisterConcrete(&MsgIssueVerifiableCredential{}, "vc/IssueVerifiableCredential", nil)
+	cdc.RegisterConcrete(&MsgRevokeVerifiableCredential{}, "vc/RevokeVerifiableCredential", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateVerifiableCredential{},
+		&MsgIssueVerifiableCredential{},
 	)
+
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreaRevokeVerifiableCredential{},
+		&MsgRevokeVerifiableCredential{},
 	)
 	// this line is used by starport scaffolding # 3
 

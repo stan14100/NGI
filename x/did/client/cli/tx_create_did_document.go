@@ -2,44 +2,84 @@ package cli
 
 import (
 	"strconv"
-	//"github.com/spf13/cobra"
-	// "github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// "github.com/cosmos/cosmos-sdk/client/tx"
-	// "github.com/stan14100/NGI/x/did/types"
+
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/spf13/cobra"
+	"github.com/stan14100/NGI/x/did/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdCreateDidDocument() {
-	// cmd := &cobra.Command{
-	// 	Use:   "create-did-document [id] [controller] [services]",
-	// 	Short: "Broadcast message createDidDocument",
-	// 	Args:  cobra.ExactArgs(3),
-	// 	RunE: func(cmd *cobra.Command, args []interface{String, String, []*Service}) (err error) {
-	// 		argId := args[0]
-	// 		argController := args[1]
-	// 		argServices := args[2]
+func calcVMType(pubKey cryptotypes.PubKey) (vmType types.VerificationMaterialType, err error) {
+	switch pubKey.(type) {
+	case *secp256k1.PubKey:
+		vmType = types.DIDVMethodTypeEcdsaSecp256k1VerificationKey2019
+	case *ed25519.PubKey:
+		vmType = types.DIDVMethodTypeEd25519VerificationKey2018
+	default:
+		err = types.ErrKeyFormat
+	}
+	return
+}
 
-	// 		clientCtx, err := client.GetClientTxContext(cmd)
-	// 		if err != nil {
-	// 			return err
-	// 		}
+func CmdCreateDid() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "create-did",
+		Short: "Broadcast message createDidDocument which creates a did document for the creator of the tx",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-	// 		msg := types.NewMsgCreateDidDocument(
-	// 			clientCtx.GetFromAddress().String(),
-	// 			argId,
-	// 			argController,
-	// 			argServices,
-	// 		)
-	// 		if err := msg.ValidateBasic(); err != nil {
-	// 			return err
-	// 		}
-	// 		return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-	// 	},
-	// }
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
-	// flags.AddTxFlagsToCmd(cmd)
+			account := clientCtx.GetFromAddress()
 
-	return //cmd
+			did := types.GenerateDid(account.String())
+
+			pubkey_info, err := clientCtx.Keyring.KeyByAddress(account)
+			if err != nil {
+				return err
+			}
+
+			pubKey := pubkey_info.GetPubKey()
+
+			vmID := did.NewVerificationMethodId(account.String())
+
+			vmType, err := calcVMType(pubKey)
+			if err != nil {
+				return err
+			}
+			verification := types.NewVerification(
+				types.NewVerificationMethod(
+					vmID,
+					did,
+					types.NewPublicKeyMultibase(pubKey.Bytes(), vmType),
+				),
+				[]string{types.Authentication},
+			)
+
+			msg := types.NewMsgCreateDidDocument(
+				clientCtx.GetFromAddress().String(),
+				did.String(),
+				did.String(),
+				types.Verifications{verification},
+				types.Services{},
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
 }

@@ -11,18 +11,18 @@ import (
 func TestMsgCreateVerifiableCredential_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateVerifiableCredential
+		msg  MsgIssueVerifiableCredential
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateVerifiableCredential{
+			msg: MsgIssueVerifiableCredential{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateVerifiableCredential{
+			msg: MsgIssueVerifiableCredential{
 				Creator: sample.AccAddress(),
 			},
 		},

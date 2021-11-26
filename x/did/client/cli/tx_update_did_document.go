@@ -2,42 +2,48 @@ package cli
 
 import (
 	"strconv"
-	// "github.com/spf13/cobra"
-	// "github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// "github.com/cosmos/cosmos-sdk/client/tx"
-	// "github.com/stan14100/NGI/x/did/types"
+
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/spf13/cobra"
+	"github.com/stan14100/NGI/x/did/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdUpdateDidDocument() {
-	// cmd := &cobra.Command{
-	// 	Use:   "update-did-document [id] [controller]",
-	// 	Short: "Broadcast message updateDidDocument",
-	// 	Args:  cobra.ExactArgs(2),
-	// 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-	// 		argId := args[0]
-	// 		argController := args[1]
+func CmdUpdateDid() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "update-did-document [controller]",
+		Short: "Broadcast message updateDidDocument which changes the controller of the did of the tx's creator",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
-	// 		clientCtx, err := client.GetClientTxContext(cmd)
-	// 		if err != nil {
-	// 			return err
-	// 		}
+			argController := args[0]
 
-	// 		msg := types.NewMsgUpdateDidDocument(
-	// 			clientCtx.GetFromAddress().String(),
-	// 			argId,
-	// 			argController,
-	// 		)
-	// 		if err := msg.ValidateBasic(); err != nil {
-	// 			return err
-	// 		}
-	// 		return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-	// 	},
-	// }
+			controller := types.GenerateDid(argController)
 
-	// flags.AddTxFlagsToCmd(cmd)
+			account := clientCtx.GetFromAddress()
 
-	return //cmd
+			did := types.GenerateDid(account.String())
+
+			msg := types.NewMsgUpdateDidDocument(
+				clientCtx.GetFromAddress().String(),
+				did.String(),
+				[]string{controller.String()},
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
 }

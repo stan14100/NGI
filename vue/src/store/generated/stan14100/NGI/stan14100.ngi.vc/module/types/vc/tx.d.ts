@@ -1,57 +1,57 @@
 import { Reader, Writer } from 'protobufjs/minimal';
 import { VerifiableCredential } from '../vc/vc';
 export declare const protobufPackage = "stan14100.ngi.vc";
-export interface MsgCreateVerifiableCredential {
+export interface MsgIssueVerifiableCredential {
     creator: string;
     verifiableCredential: VerifiableCredential | undefined;
 }
-export interface MsgCreateVerifiableCredentialResponse {
+export interface MsgIssueVerifiableCredentialResponse {
 }
-export interface MsgCreaRevokeVerifiableCredential {
+export interface MsgRevokeVerifiableCredential {
     creator: string;
     credentialId: string;
 }
-export interface MsgCreaRevokeVerifiableCredentialResponse {
+export interface MsgRevokeVerifiableCredentialResponse {
 }
-export declare const MsgCreateVerifiableCredential: {
-    encode(message: MsgCreateVerifiableCredential, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgCreateVerifiableCredential;
-    fromJSON(object: any): MsgCreateVerifiableCredential;
-    toJSON(message: MsgCreateVerifiableCredential): unknown;
-    fromPartial(object: DeepPartial<MsgCreateVerifiableCredential>): MsgCreateVerifiableCredential;
+export declare const MsgIssueVerifiableCredential: {
+    encode(message: MsgIssueVerifiableCredential, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgIssueVerifiableCredential;
+    fromJSON(object: any): MsgIssueVerifiableCredential;
+    toJSON(message: MsgIssueVerifiableCredential): unknown;
+    fromPartial(object: DeepPartial<MsgIssueVerifiableCredential>): MsgIssueVerifiableCredential;
 };
-export declare const MsgCreateVerifiableCredentialResponse: {
-    encode(_: MsgCreateVerifiableCredentialResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgCreateVerifiableCredentialResponse;
-    fromJSON(_: any): MsgCreateVerifiableCredentialResponse;
-    toJSON(_: MsgCreateVerifiableCredentialResponse): unknown;
-    fromPartial(_: DeepPartial<MsgCreateVerifiableCredentialResponse>): MsgCreateVerifiableCredentialResponse;
+export declare const MsgIssueVerifiableCredentialResponse: {
+    encode(_: MsgIssueVerifiableCredentialResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgIssueVerifiableCredentialResponse;
+    fromJSON(_: any): MsgIssueVerifiableCredentialResponse;
+    toJSON(_: MsgIssueVerifiableCredentialResponse): unknown;
+    fromPartial(_: DeepPartial<MsgIssueVerifiableCredentialResponse>): MsgIssueVerifiableCredentialResponse;
 };
-export declare const MsgCreaRevokeVerifiableCredential: {
-    encode(message: MsgCreaRevokeVerifiableCredential, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgCreaRevokeVerifiableCredential;
-    fromJSON(object: any): MsgCreaRevokeVerifiableCredential;
-    toJSON(message: MsgCreaRevokeVerifiableCredential): unknown;
-    fromPartial(object: DeepPartial<MsgCreaRevokeVerifiableCredential>): MsgCreaRevokeVerifiableCredential;
+export declare const MsgRevokeVerifiableCredential: {
+    encode(message: MsgRevokeVerifiableCredential, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRevokeVerifiableCredential;
+    fromJSON(object: any): MsgRevokeVerifiableCredential;
+    toJSON(message: MsgRevokeVerifiableCredential): unknown;
+    fromPartial(object: DeepPartial<MsgRevokeVerifiableCredential>): MsgRevokeVerifiableCredential;
 };
-export declare const MsgCreaRevokeVerifiableCredentialResponse: {
-    encode(_: MsgCreaRevokeVerifiableCredentialResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgCreaRevokeVerifiableCredentialResponse;
-    fromJSON(_: any): MsgCreaRevokeVerifiableCredentialResponse;
-    toJSON(_: MsgCreaRevokeVerifiableCredentialResponse): unknown;
-    fromPartial(_: DeepPartial<MsgCreaRevokeVerifiableCredentialResponse>): MsgCreaRevokeVerifiableCredentialResponse;
+export declare const MsgRevokeVerifiableCredentialResponse: {
+    encode(_: MsgRevokeVerifiableCredentialResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRevokeVerifiableCredentialResponse;
+    fromJSON(_: any): MsgRevokeVerifiableCredentialResponse;
+    toJSON(_: MsgRevokeVerifiableCredentialResponse): unknown;
+    fromPartial(_: DeepPartial<MsgRevokeVerifiableCredentialResponse>): MsgRevokeVerifiableCredentialResponse;
 };
 /** Msg defines the Msg service. */
 export interface Msg {
-    CreateVerifiableCredential(request: MsgCreateVerifiableCredential): Promise<MsgCreateVerifiableCredentialResponse>;
+    IssueVerifiableCredential(request: MsgIssueVerifiableCredential): Promise<MsgIssueVerifiableCredentialResponse>;
     /** this line is used by starport scaffolding # proto/tx/rpc */
-    CreaRevokeVerifiableCredential(request: MsgCreaRevokeVerifiableCredential): Promise<MsgCreaRevokeVerifiableCredentialResponse>;
+    RevokeVerifiableCredential(request: MsgRevokeVerifiableCredential): Promise<MsgRevokeVerifiableCredentialResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
-    CreateVerifiableCredential(request: MsgCreateVerifiableCredential): Promise<MsgCreateVerifiableCredentialResponse>;
-    CreaRevokeVerifiableCredential(request: MsgCreaRevokeVerifiableCredential): Promise<MsgCreaRevokeVerifiableCredentialResponse>;
+    IssueVerifiableCredential(request: MsgIssueVerifiableCredential): Promise<MsgIssueVerifiableCredentialResponse>;
+    RevokeVerifiableCredential(request: MsgRevokeVerifiableCredential): Promise<MsgRevokeVerifiableCredentialResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

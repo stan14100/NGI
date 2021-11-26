@@ -54,3 +54,17 @@ curl https://get.starport.network/stan14100/NGI@latest! | sudo bash
 - [Cosmos SDK documentation](https://docs.cosmos.network)
 - [Cosmos SDK Tutorials](https://tutorials.cosmos.network)
 - [Discord](https://discord.gg/cosmosnetwork)
+
+## Cosmos DIDs
+Cosmos DIDs are identifiable by their cosmos method string and conform to the [Generic DID Scheme](https://w3c.github.io/did-core/).
+
+A DID that uses this method MUST begin with the following prefix: did:cosmos:. Per the DID specification, this string MUST be in lowercase. The remainder of the DID, after the prefix, is specified below:
+
+cosmos-did                = "did:cosmos:" cosmos-identifier-type
+cosmos-identifier-type    = [ cosmos-type ":" ] cosmos-key
+cosmos-type               = "ngi"
+cosmos-key                = 1*255id-char "1" 20*255HEXDIG 
+
+DIDs of `key` type are always generated from the Cosmos blockchain address they refer to. For example, see a DID of `key` type:
+
+- `did:cosmos:key:cosmos1hjct6q7npsspsg3dgvzk3sdf89spmlpfg8wwf7`

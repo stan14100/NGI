@@ -8,27 +8,33 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/stan14100/NGI/x/vc/types"
+	"github.com/stan14100/NGI/x/did/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdCreaRevokeVerifiableCredential() *cobra.Command {
+func CmdRemoveService() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "crea-revoke-verifiable-credential [credential-id]",
-		Short: "Broadcast message CreaRevokeVerifiableCredential",
-		Args:  cobra.ExactArgs(1),
+		Use:   "remove-service [service-id]",
+		Short: "Broadcast message RemoveService which deletes the requested service of the did of tx's creator",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argCredentialId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreaRevokeVerifiableCredential(
+			account := clientCtx.GetFromAddress()
+
+			did := types.GenerateDid(account.String())
+
+			argServiceId := args[1]
+
+			msg := types.NewMsgRemoveService(
 				clientCtx.GetFromAddress().String(),
-				argCredentialId,
+				did.String(),
+				argServiceId,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

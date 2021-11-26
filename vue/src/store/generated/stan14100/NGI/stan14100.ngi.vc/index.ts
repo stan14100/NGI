@@ -109,61 +109,61 @@ export default {
 			})
 		},
 		
-		async sendMsgCreateVerifiableCredential({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgIssueVerifiableCredential({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateVerifiableCredential(value)
+				const msg = await txClient.msgIssueVerifiableCredential(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgCreateVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgIssueVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgCreateVerifiableCredential:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgIssueVerifiableCredential:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgCreaRevokeVerifiableCredential({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgRevokeVerifiableCredential({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreaRevokeVerifiableCredential(value)
+				const msg = await txClient.msgRevokeVerifiableCredential(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgCreaRevokeVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgRevokeVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgCreaRevokeVerifiableCredential:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgRevokeVerifiableCredential:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
 		
-		async MsgCreateVerifiableCredential({ rootGetters }, { value }) {
+		async MsgIssueVerifiableCredential({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateVerifiableCredential(value)
+				const msg = await txClient.msgIssueVerifiableCredential(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgCreateVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgIssueVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgCreateVerifiableCredential:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgIssueVerifiableCredential:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}
 		},
-		async MsgCreaRevokeVerifiableCredential({ rootGetters }, { value }) {
+		async MsgRevokeVerifiableCredential({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreaRevokeVerifiableCredential(value)
+				const msg = await txClient.msgRevokeVerifiableCredential(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgCreaRevokeVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgRevokeVerifiableCredential:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgCreaRevokeVerifiableCredential:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgRevokeVerifiableCredential:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}

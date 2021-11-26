@@ -8,7 +8,7 @@ import (
 	"github.com/stan14100/NGI/x/did/types"
 )
 
-func (k msgServer) DeleteService(goCtx context.Context, msg *types.MsgDeleteService) (*types.MsgDeleteServiceResponse, error) {
+func (k msgServer) RemoveService(goCtx context.Context, msg *types.MsgRemoveService) (*types.MsgRemoveServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	k.Logger(ctx).Info("Request to remove the service with id:%s from did document with id:%s ", msg.ServiceId, msg.Id)
 	// retrieve the did document
@@ -25,11 +25,16 @@ func (k msgServer) DeleteService(goCtx context.Context, msg *types.MsgDeleteServ
 		return nil, err
 	}
 	// delete the service
-	didDoc.DeleteService(msg.ServiceId)
+	didDoc.RemoveService(msg.ServiceId)
 
 	// persist the new did document
 	k.Keeper.AddDidDocument(ctx, []byte(msg.Id), didDoc)
+
+	if err := updateDidMetadata(&k.Keeper, ctx, didDoc.Id); err != nil {
+		k.Logger(ctx).Error(err.Error(), "did", didDoc.Id)
+	}
+
 	k.Logger(ctx).Info("removed service from did document with id:%s and controller:%s", msg.Id, msg.Creator)
 
-	return &types.MsgDeleteServiceResponse{}, nil
+	return &types.MsgRemoveServiceResponse{}, nil
 }
