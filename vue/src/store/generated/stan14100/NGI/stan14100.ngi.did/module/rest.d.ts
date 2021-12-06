@@ -12,10 +12,21 @@ export interface DidDidDocument {
     capabilityInvocation?: string[];
     capabilityDelegation?: string[];
 }
+export interface DidDidMetadata {
+    versionId?: string;
+    /** @format date-time */
+    createdTimestamp?: string;
+    /** @format date-time */
+    updatedTimestamp?: string;
+}
 export declare type DidMsgAddServiceResponse = object;
 export declare type DidMsgCreateDidDocumentResponse = object;
 export declare type DidMsgRemoveServiceResponse = object;
 export declare type DidMsgUpdateDidDocumentResponse = object;
+export interface DidQueryDidResponse {
+    didDocument?: DidDidDocument;
+    didMetadata?: DidDidMetadata;
+}
 export interface DidQueryDidsResponse {
     didDocuments?: DidDidDocument[];
     /**
@@ -164,6 +175,17 @@ export declare class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryDid
+     * @summary Queries a list of did items.
+     * @request GET:/stan14100/ngi/did/did
+     */
+    queryDid: (query?: {
+        id?: string;
+    }, params?: RequestParams) => Promise<HttpResponse<DidQueryDidResponse, RpcStatus>>;
     /**
      * No description
      *

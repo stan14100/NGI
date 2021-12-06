@@ -62,7 +62,7 @@ func CmdCreateDid() *cobra.Command {
 					did,
 					types.NewPublicKeyMultibase(pubKey.Bytes(), vmType),
 				),
-				[]string{types.Authentication},
+				[]string{types.Authentication, types.AssertionMethod},
 			)
 
 			msg := types.NewMsgCreateDidDocument(

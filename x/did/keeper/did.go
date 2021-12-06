@@ -63,16 +63,13 @@ func (k Keeper) GetDidMetadata(ctx sdk.Context, key []byte) (types.DidMetadata, 
 
 // ResolveDid returning the did document and associated metadata
 func (k Keeper) ResolveDid(ctx sdk.Context, did types.Did) (doc types.DidDocument, meta types.DidMetadata, err error) {
-	// if strings.HasPrefix(did.String(), types.DidKeyPrefix) {
-	// 	doc, meta, err = types.Gen(did.String())
-	// 	return
-	// }
+
 	doc, found := k.GetDidDocument(ctx, []byte(did.String()))
 	if !found {
 		err = types.ErrDidDocumentNotFound
 		return
 	}
-	//meta, _ = k.GetDidMetadata(ctx, []byte(did.String()))
+	meta, _ = k.GetDidMetadata(ctx, []byte(did.String()))
 	return
 }
 

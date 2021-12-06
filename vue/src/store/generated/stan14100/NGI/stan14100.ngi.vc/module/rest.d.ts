@@ -7,6 +7,58 @@ export interface RpcStatus {
     message?: string;
     details?: ProtobufAny[];
 }
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+    /**
+     * key is a value returned in PageResponse.next_key to begin
+     * querying the next page most efficiently. Only one of offset or key
+     * should be set.
+     * @format byte
+     */
+    key?: string;
+    /**
+     * offset is a numeric offset that can be used when key is unavailable.
+     * It is less efficient than using key. Only one of offset or key should
+     * be set.
+     * @format uint64
+     */
+    offset?: string;
+    /**
+     * limit is the total number of results to be returned in the result page.
+     * If left empty it will default to a value to be set by each app.
+     * @format uint64
+     */
+    limit?: string;
+    /**
+     * count_total is set to true  to indicate that the result set should include
+     * a count of the total number of items available for pagination in UIs.
+     * count_total is only respected when offset is used. It is ignored when key
+     * is set.
+     */
+    countTotal?: boolean;
+    /** reverse is set to true if results are to be returned in the descending order. */
+    reverse?: boolean;
+}
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+    /** @format byte */
+    nextKey?: string;
+    /** @format uint64 */
+    total?: string;
+}
 export interface VcHealthCenterSubject {
     id?: string;
     name?: string;
@@ -32,6 +84,30 @@ export interface VcProof {
     verificationMethod?: string;
     signature?: string;
 }
+export interface VcQueryValidateVcResponse {
+    validationRes?: boolean;
+}
+export interface VcQueryVcResponse {
+    vc?: VcVerifiableCredential;
+}
+export interface VcQueryVcsResponse {
+    vcs?: VcVerifiableCredential[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface VcUserHealthSubject {
+    id?: string;
+    testId?: string;
+    result?: boolean;
+}
 export interface VcVerifiableCredential {
     context?: string[];
     /**
@@ -46,12 +122,8 @@ export interface VcVerifiableCredential {
      * provided, the URIs MUST be interpreted as an unordered set.
      */
     type?: string[];
-    /**
-     * The value of the credentialSubject property is defined as a set of
-     * objects that contain one or more properties that are each related
-     * to a subject of the verifiable credential.
-     */
-    credentialSubject?: VcHealthCenterSubject;
+    healthCredSubject?: VcHealthCenterSubject;
+    userCredSubject?: VcUserHealthSubject;
     /**
      * The value of the issuer property MUST be either a URI or an object
      * containing an id property. It is RECOMMENDED that the URI in the issuer
@@ -135,5 +207,42 @@ export declare class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryValidateVc
+     * @request POST:/stan14100/ngi/vc/validate
+     */
+    queryValidateVc: (query?: {
+        vcId?: string;
+        pubKey?: string;
+    }, params?: RequestParams) => Promise<HttpResponse<VcQueryValidateVcResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryVc
+     * @summary Queries a list of vc items.
+     * @request GET:/stan14100/ngi/vc/vc
+     */
+    queryVc: (query?: {
+        vcId?: string;
+    }, params?: RequestParams) => Promise<HttpResponse<VcQueryVcResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryVcs
+     * @summary Queries a list of vcs items.
+     * @request GET:/stan14100/ngi/vc/vcs
+     */
+    queryVcs: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<VcQueryVcsResponse, RpcStatus>>;
 }
 export {};

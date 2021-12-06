@@ -24,14 +24,18 @@ message VerifiableCredential {
   // The value of the credentialSubject property is defined as a set of
   // objects that contain one or more properties that are each related
   // to a subject of the verifiable credential.
-  HealthCenterSubject credentialSubject = 4;
+  oneof credential_subject {
+    HealthCenterSubject healthCredSubject = 4; // represents a credential subject that identifies an authorized health center
 
+    UserHealthSubject userCredSubject = 5; // represents a credential subject that connects health results to a user
+    
+  }
   // The value of the issuer property MUST be either a URI or an object
   // containing an id property. It is RECOMMENDED that the URI in the issuer
   // or its id be one which, if dereferenced, results in a document containing
   // machine-readable information about the issuer that can be used to verify
   // the information expressed in the credential.
-  string issuer = 5;
+  string issuer = 6;
 
   // A credential MUST have an issuanceDate property. The value of the issuanceDate
   // property MUST be a string value of an [RFC3339] combined date and time string
@@ -39,12 +43,12 @@ message VerifiableCredential {
   // be a date and time in the future. Note that this value represents the earliest
   // point in time at which the information associated with the credentialSubject
   // property becomes valid.
-  google.protobuf.Timestamp issuance_date = 6 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp issuance_date = 7 [(gogoproto.stdtime) = true];
 
   // One or more cryptographic proofs that can be used to detect tampering
   // and verify the authorship of a credential or presentation. The specific
   // method used for an embedded proof MUST be included using the type property.
-  Proof proof = 10;
+  Proof proof = 8;
 }
 
 //A structure descrubing a Health Center information
@@ -61,6 +65,12 @@ message Info {
   string postcode = 4;
   string vat = 5;
 
+}
+
+message UserHealthSubject {
+  string id = 1;
+  string test_id = 2;
+  bool result = 3;
 }
 
 //A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.

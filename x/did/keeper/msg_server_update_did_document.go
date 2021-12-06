@@ -20,6 +20,17 @@ func (k msgServer) UpdateDidDocument(goCtx context.Context, msg *types.MsgUpdate
 		return nil, err
 	}
 
+	if !didDoc.HasRelationship(msg.Creator, types.Authentication) {
+		err := sdkerrors.Wrapf(
+			types.ErrUnauthorized,
+			"signer %s not authorized to update the target did document at %s",
+			msg.Creator, msg.Id,
+		)
+		k.Logger(ctx).Error(err.Error())
+		return nil, err
+
+	}
+
 	err := didDoc.SetControllers(msg.Controller...)
 	if err != nil {
 		k.Logger(ctx).Error(err.Error())

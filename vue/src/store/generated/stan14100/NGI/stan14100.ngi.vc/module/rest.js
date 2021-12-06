@@ -134,4 +134,51 @@ export class HttpClient {
  * @version version not set
  */
 export class Api extends HttpClient {
+    constructor() {
+        super(...arguments);
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryValidateVc
+         * @request POST:/stan14100/ngi/vc/validate
+         */
+        this.queryValidateVc = (query, params = {}) => this.request({
+            path: `/stan14100/ngi/vc/validate`,
+            method: "POST",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryVc
+         * @summary Queries a list of vc items.
+         * @request GET:/stan14100/ngi/vc/vc
+         */
+        this.queryVc = (query, params = {}) => this.request({
+            path: `/stan14100/ngi/vc/vc`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryVcs
+         * @summary Queries a list of vcs items.
+         * @request GET:/stan14100/ngi/vc/vcs
+         */
+        this.queryVcs = (query, params = {}) => this.request({
+            path: `/stan14100/ngi/vc/vcs`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+    }
 }

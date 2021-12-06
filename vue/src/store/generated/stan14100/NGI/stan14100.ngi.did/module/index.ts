@@ -4,17 +4,17 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgRemoveService } from "./types/did/tx";
-import { MsgUpdateDidDocument } from "./types/did/tx";
 import { MsgAddService } from "./types/did/tx";
 import { MsgCreateDidDocument } from "./types/did/tx";
+import { MsgRemoveService } from "./types/did/tx";
+import { MsgUpdateDidDocument } from "./types/did/tx";
 
 
 const types = [
-  ["/stan14100.ngi.did.MsgRemoveService", MsgRemoveService],
-  ["/stan14100.ngi.did.MsgUpdateDidDocument", MsgUpdateDidDocument],
   ["/stan14100.ngi.did.MsgAddService", MsgAddService],
   ["/stan14100.ngi.did.MsgCreateDidDocument", MsgCreateDidDocument],
+  ["/stan14100.ngi.did.MsgRemoveService", MsgRemoveService],
+  ["/stan14100.ngi.did.MsgUpdateDidDocument", MsgUpdateDidDocument],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -43,10 +43,10 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgRemoveService: (data: MsgRemoveService): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgRemoveService", value: data }),
-    msgUpdateDidDocument: (data: MsgUpdateDidDocument): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgUpdateDidDocument", value: data }),
     msgAddService: (data: MsgAddService): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgAddService", value: data }),
     msgCreateDidDocument: (data: MsgCreateDidDocument): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgCreateDidDocument", value: data }),
+    msgRemoveService: (data: MsgRemoveService): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgRemoveService", value: data }),
+    msgUpdateDidDocument: (data: MsgUpdateDidDocument): EncodeObject => ({ typeUrl: "/stan14100.ngi.did.MsgUpdateDidDocument", value: data }),
     
   };
 };

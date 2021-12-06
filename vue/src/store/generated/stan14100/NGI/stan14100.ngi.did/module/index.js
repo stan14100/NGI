@@ -2,15 +2,15 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgRemoveService } from "./types/did/tx";
-import { MsgUpdateDidDocument } from "./types/did/tx";
 import { MsgAddService } from "./types/did/tx";
 import { MsgCreateDidDocument } from "./types/did/tx";
+import { MsgRemoveService } from "./types/did/tx";
+import { MsgUpdateDidDocument } from "./types/did/tx";
 const types = [
-    ["/stan14100.ngi.did.MsgRemoveService", MsgRemoveService],
-    ["/stan14100.ngi.did.MsgUpdateDidDocument", MsgUpdateDidDocument],
     ["/stan14100.ngi.did.MsgAddService", MsgAddService],
     ["/stan14100.ngi.did.MsgCreateDidDocument", MsgCreateDidDocument],
+    ["/stan14100.ngi.did.MsgRemoveService", MsgRemoveService],
+    ["/stan14100.ngi.did.MsgUpdateDidDocument", MsgUpdateDidDocument],
 ];
 export const MissingWalletError = new Error("wallet is required");
 const registry = new Registry(types);
@@ -25,10 +25,10 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
-        msgRemoveService: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgRemoveService", value: data }),
-        msgUpdateDidDocument: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgUpdateDidDocument", value: data }),
         msgAddService: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgAddService", value: data }),
         msgCreateDidDocument: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgCreateDidDocument", value: data }),
+        msgRemoveService: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgRemoveService", value: data }),
+        msgUpdateDidDocument: (data) => ({ typeUrl: "/stan14100.ngi.did.MsgUpdateDidDocument", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {

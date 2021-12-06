@@ -15,20 +15,23 @@ var _ = strconv.Itoa(0)
 
 func CmdRevokeVerifiableCredential() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-verifiable-credential [credential-id]",
-		Short: "Broadcast message RevokeVerifiableCredential",
+		Use:   "revoke-vc [credential-id]",
+		Short: "Broadcast message RevokeVerifiableCredential which revokes a credential for a user",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argCredentialId := args[0]
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
+			accAddr := clientCtx.GetFromAddress()
+			account := accAddr.String()
+
+			credentialId := args[0]
+
 			msg := types.NewMsgRevokeVerifiableCredential(
-				clientCtx.GetFromAddress().String(),
-				argCredentialId,
+				account,
+				credentialId,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

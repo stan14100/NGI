@@ -12501,6 +12501,165 @@ paths:
                         }
       tags:
         - Query
+  /stan14100/ngi/did/did:
+    get:
+      summary: Queries a list of did items.
+      operationId: Stan14100NgiDidDid
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              didDocument:
+                type: object
+                properties:
+                  context:
+                    type: array
+                    items:
+                      type: string
+                    description: '@context is spec for did document.'
+                  id:
+                    type: string
+                    description: id represents the id for the did document.
+                  controller:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      A DID controller is an entity that is authorized to make
+                      changes to a DID document.
+
+                      https://www.w3.org/TR/did-core/#did-controller
+                  verificationMethod:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyHex:
+                          type: string
+                        publicKeyMultibase:
+                          type: string
+                      title: 'https://www.w3.org/TR/did-core/#verification-methods'
+                    title: >-
+                      A DID document can express verification methods, 
+
+                      such as cryptographic public keys, which can be used 
+
+                      to authenticate or authorize interactions with the DID
+                      subject or associated parties.
+
+                      https://www.w3.org/TR/did-core/#verification-methods
+                  service:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      title: 'https://www.w3.org/TR/did-core/#service-properties'
+                    title: >-
+                      Services are used in DID documents to express ways of
+                      communicating with the DID subject or associated entities.
+
+                      https://www.w3.org/TR/did-core/#services
+                  authentication:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      Authentication represents public key associated with the
+                      did document.
+
+                      https://www.w3.org/TR/did-core/#authentication
+                  assertionMethod:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      Used to specify how the DID subject is expected to express
+                      claims, such as for the purposes of issuing a Verifiable
+                      Credential.
+
+                      https://www.w3.org/TR/did-core/#assertion
+                  keyAgreement:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      used to specify how an entity can generate encryption
+                      material in order to transmit confidential information
+                      intended for the DID subject.
+
+                      https://www.w3.org/TR/did-core/#key-agreement
+                  capabilityInvocation:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      Used to specify a verification method that might be used
+                      by the DID subject to invoke a cryptographic capability,  
+
+                      such as the authorization to update the DID Document.
+
+                      https://www.w3.org/TR/did-core/#capability-invocation
+                  capabilityDelegation:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      Used to specify a mechanism that might be used by the DID
+                      subject to delegate a cryptographic capability to another
+                      party.
+
+                      https://www.w3.org/TR/did-core/#capability-delegation
+                title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+              didMetadata:
+                type: object
+                properties:
+                  versionId:
+                    type: string
+                  createdTimestamp:
+                    type: string
+                    format: date-time
+                  updatedTimestamp:
+                    type: string
+                    format: date-time
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /stan14100/ngi/did/dids:
     get:
       summary: Queries a list of dids items.
@@ -12628,6 +12787,440 @@ paths:
 
                         https://www.w3.org/TR/did-core/#capability-delegation
                   title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /stan14100/ngi/vc/validate:
+    post:
+      operationId: Stan14100NgiVcValidateVc
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              validationRes:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: vcId
+          in: query
+          required: false
+          type: string
+        - name: pubKey
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /stan14100/ngi/vc/vc:
+    get:
+      summary: Queries a list of vc items.
+      operationId: Stan14100NgiVcVc
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vc:
+                type: object
+                properties:
+                  context:
+                    type: array
+                    items:
+                      type: string
+                    title: >-
+                      @context is spec for verifiable credential base context
+                      URL is "https://www.w3.org/2018/credentials/v1",
+                  id:
+                    type: string
+                    description: >-
+                      The value of the id property MUST be a single URI. It is
+                      RECOMMENDED
+
+                      that the URI in the id be one which, if dereferenced,
+                      results in a
+
+                      document containing machine-readable information about the
+                      id.
+                  type:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      The value of the type property MUST be, or map to (through
+                      interpretation
+
+                      of the @context property), one or more URIs. If more than
+                      one URI is
+
+                      provided, the URIs MUST be interpreted as an unordered
+                      set.
+                  healthCredSubject:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      info:
+                        type: object
+                        properties:
+                          adress:
+                            type: string
+                          city:
+                            type: string
+                          country:
+                            type: string
+                          postcode:
+                            type: string
+                          vat:
+                            type: string
+                    title: A structure descrubing a Health Center information
+                  userCredSubject:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      testId:
+                        type: string
+                      result:
+                        type: boolean
+                  issuer:
+                    type: string
+                    description: >-
+                      The value of the issuer property MUST be either a URI or
+                      an object
+
+                      containing an id property. It is RECOMMENDED that the URI
+                      in the issuer
+
+                      or its id be one which, if dereferenced, results in a
+                      document containing
+
+                      machine-readable information about the issuer that can be
+                      used to verify
+
+                      the information expressed in the credential.
+                  issuanceDate:
+                    type: string
+                    format: date-time
+                    description: >-
+                      A credential MUST have an issuanceDate property. The value
+                      of the issuanceDate
+
+                      property MUST be a string value of an [RFC3339] combined
+                      date and time string
+
+                      representing the date and time the credential becomes
+                      valid, which could
+
+                      be a date and time in the future. Note that this value
+                      represents the earliest
+
+                      point in time at which the information associated with the
+                      credentialSubject
+
+                      property becomes valid.
+                  proof:
+                    description: >-
+                      One or more cryptographic proofs that can be used to
+                      detect tampering
+
+                      and verify the authorship of a credential or presentation.
+                      The specific
+
+                      method used for an embedded proof MUST be included using
+                      the type property.
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      created:
+                        type: string
+                      proofPurpose:
+                        type: string
+                      verificationMethod:
+                        type: string
+                      signature:
+                        type: string
+                title: VerifiableCredential represents a verifiable credential
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: vcId
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /stan14100/ngi/vc/vcs:
+    get:
+      summary: Queries a list of vcs items.
+      operationId: Stan14100NgiVcVcs
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vcs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    context:
+                      type: array
+                      items:
+                        type: string
+                      title: >-
+                        @context is spec for verifiable credential base context
+                        URL is "https://www.w3.org/2018/credentials/v1",
+                    id:
+                      type: string
+                      description: >-
+                        The value of the id property MUST be a single URI. It is
+                        RECOMMENDED
+
+                        that the URI in the id be one which, if dereferenced,
+                        results in a
+
+                        document containing machine-readable information about
+                        the id.
+                    type:
+                      type: array
+                      items:
+                        type: string
+                      description: >-
+                        The value of the type property MUST be, or map to
+                        (through interpretation
+
+                        of the @context property), one or more URIs. If more
+                        than one URI is
+
+                        provided, the URIs MUST be interpreted as an unordered
+                        set.
+                    healthCredSubject:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        info:
+                          type: object
+                          properties:
+                            adress:
+                              type: string
+                            city:
+                              type: string
+                            country:
+                              type: string
+                            postcode:
+                              type: string
+                            vat:
+                              type: string
+                      title: A structure descrubing a Health Center information
+                    userCredSubject:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        testId:
+                          type: string
+                        result:
+                          type: boolean
+                    issuer:
+                      type: string
+                      description: >-
+                        The value of the issuer property MUST be either a URI or
+                        an object
+
+                        containing an id property. It is RECOMMENDED that the
+                        URI in the issuer
+
+                        or its id be one which, if dereferenced, results in a
+                        document containing
+
+                        machine-readable information about the issuer that can
+                        be used to verify
+
+                        the information expressed in the credential.
+                    issuanceDate:
+                      type: string
+                      format: date-time
+                      description: >-
+                        A credential MUST have an issuanceDate property. The
+                        value of the issuanceDate
+
+                        property MUST be a string value of an [RFC3339] combined
+                        date and time string
+
+                        representing the date and time the credential becomes
+                        valid, which could
+
+                        be a date and time in the future. Note that this value
+                        represents the earliest
+
+                        point in time at which the information associated with
+                        the credentialSubject
+
+                        property becomes valid.
+                    proof:
+                      description: >-
+                        One or more cryptographic proofs that can be used to
+                        detect tampering
+
+                        and verify the authorship of a credential or
+                        presentation. The specific
+
+                        method used for an embedded proof MUST be included using
+                        the type property.
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        created:
+                          type: string
+                        proofPurpose:
+                          type: string
+                        verificationMethod:
+                          type: string
+                        signature:
+                          type: string
+                  title: VerifiableCredential represents a verifiable credential
               pagination:
                 type: object
                 properties:
@@ -20152,6 +20745,17 @@ definitions:
 
           https://www.w3.org/TR/did-core/#capability-delegation
     title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+  stan14100.ngi.did.DidMetadata:
+    type: object
+    properties:
+      versionId:
+        type: string
+      createdTimestamp:
+        type: string
+        format: date-time
+      updatedTimestamp:
+        type: string
+        format: date-time
   stan14100.ngi.did.MsgAddServiceResponse:
     type: object
   stan14100.ngi.did.MsgCreateDidDocumentResponse:
@@ -20160,6 +20764,131 @@ definitions:
     type: object
   stan14100.ngi.did.MsgUpdateDidDocumentResponse:
     type: object
+  stan14100.ngi.did.QueryDidResponse:
+    type: object
+    properties:
+      didDocument:
+        type: object
+        properties:
+          context:
+            type: array
+            items:
+              type: string
+            description: '@context is spec for did document.'
+          id:
+            type: string
+            description: id represents the id for the did document.
+          controller:
+            type: array
+            items:
+              type: string
+            title: >-
+              A DID controller is an entity that is authorized to make changes
+              to a DID document.
+
+              https://www.w3.org/TR/did-core/#did-controller
+          verificationMethod:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyHex:
+                  type: string
+                publicKeyMultibase:
+                  type: string
+              title: 'https://www.w3.org/TR/did-core/#verification-methods'
+            title: >-
+              A DID document can express verification methods, 
+
+              such as cryptographic public keys, which can be used 
+
+              to authenticate or authorize interactions with the DID subject or
+              associated parties.
+
+              https://www.w3.org/TR/did-core/#verification-methods
+          service:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              title: 'https://www.w3.org/TR/did-core/#service-properties'
+            title: >-
+              Services are used in DID documents to express ways of
+              communicating with the DID subject or associated entities.
+
+              https://www.w3.org/TR/did-core/#services
+          authentication:
+            type: array
+            items:
+              type: string
+            title: >-
+              Authentication represents public key associated with the did
+              document.
+
+              https://www.w3.org/TR/did-core/#authentication
+          assertionMethod:
+            type: array
+            items:
+              type: string
+            title: >-
+              Used to specify how the DID subject is expected to express claims,
+              such as for the purposes of issuing a Verifiable Credential.
+
+              https://www.w3.org/TR/did-core/#assertion
+          keyAgreement:
+            type: array
+            items:
+              type: string
+            title: >-
+              used to specify how an entity can generate encryption material in
+              order to transmit confidential information intended for the DID
+              subject.
+
+              https://www.w3.org/TR/did-core/#key-agreement
+          capabilityInvocation:
+            type: array
+            items:
+              type: string
+            title: >-
+              Used to specify a verification method that might be used by the
+              DID subject to invoke a cryptographic capability,  
+
+              such as the authorization to update the DID Document.
+
+              https://www.w3.org/TR/did-core/#capability-invocation
+          capabilityDelegation:
+            type: array
+            items:
+              type: string
+            title: >-
+              Used to specify a mechanism that might be used by the DID subject
+              to delegate a cryptographic capability to another party.
+
+              https://www.w3.org/TR/did-core/#capability-delegation
+        title: 'https://www.w3.org/TR/did-core/#did-document-properties'
+      didMetadata:
+        type: object
+        properties:
+          versionId:
+            type: string
+          createdTimestamp:
+            type: string
+            format: date-time
+          updatedTimestamp:
+            type: string
+            format: date-time
   stan14100.ngi.did.QueryDidsResponse:
     type: object
     properties:
@@ -20405,6 +21134,293 @@ definitions:
 
       The specific method used for an embedded proof MUST be included using the
       type property.
+  stan14100.ngi.vc.QueryValidateVcResponse:
+    type: object
+    properties:
+      validationRes:
+        type: boolean
+  stan14100.ngi.vc.QueryVcResponse:
+    type: object
+    properties:
+      vc:
+        type: object
+        properties:
+          context:
+            type: array
+            items:
+              type: string
+            title: >-
+              @context is spec for verifiable credential base context URL is
+              "https://www.w3.org/2018/credentials/v1",
+          id:
+            type: string
+            description: >-
+              The value of the id property MUST be a single URI. It is
+              RECOMMENDED
+
+              that the URI in the id be one which, if dereferenced, results in a
+
+              document containing machine-readable information about the id.
+          type:
+            type: array
+            items:
+              type: string
+            description: >-
+              The value of the type property MUST be, or map to (through
+              interpretation
+
+              of the @context property), one or more URIs. If more than one URI
+              is
+
+              provided, the URIs MUST be interpreted as an unordered set.
+          healthCredSubject:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              info:
+                type: object
+                properties:
+                  adress:
+                    type: string
+                  city:
+                    type: string
+                  country:
+                    type: string
+                  postcode:
+                    type: string
+                  vat:
+                    type: string
+            title: A structure descrubing a Health Center information
+          userCredSubject:
+            type: object
+            properties:
+              id:
+                type: string
+              testId:
+                type: string
+              result:
+                type: boolean
+          issuer:
+            type: string
+            description: >-
+              The value of the issuer property MUST be either a URI or an object
+
+              containing an id property. It is RECOMMENDED that the URI in the
+              issuer
+
+              or its id be one which, if dereferenced, results in a document
+              containing
+
+              machine-readable information about the issuer that can be used to
+              verify
+
+              the information expressed in the credential.
+          issuanceDate:
+            type: string
+            format: date-time
+            description: >-
+              A credential MUST have an issuanceDate property. The value of the
+              issuanceDate
+
+              property MUST be a string value of an [RFC3339] combined date and
+              time string
+
+              representing the date and time the credential becomes valid, which
+              could
+
+              be a date and time in the future. Note that this value represents
+              the earliest
+
+              point in time at which the information associated with the
+              credentialSubject
+
+              property becomes valid.
+          proof:
+            description: >-
+              One or more cryptographic proofs that can be used to detect
+              tampering
+
+              and verify the authorship of a credential or presentation. The
+              specific
+
+              method used for an embedded proof MUST be included using the type
+              property.
+            type: object
+            properties:
+              type:
+                type: string
+              created:
+                type: string
+              proofPurpose:
+                type: string
+              verificationMethod:
+                type: string
+              signature:
+                type: string
+        title: VerifiableCredential represents a verifiable credential
+  stan14100.ngi.vc.QueryVcsResponse:
+    type: object
+    properties:
+      vcs:
+        type: array
+        items:
+          type: object
+          properties:
+            context:
+              type: array
+              items:
+                type: string
+              title: >-
+                @context is spec for verifiable credential base context URL is
+                "https://www.w3.org/2018/credentials/v1",
+            id:
+              type: string
+              description: >-
+                The value of the id property MUST be a single URI. It is
+                RECOMMENDED
+
+                that the URI in the id be one which, if dereferenced, results in
+                a
+
+                document containing machine-readable information about the id.
+            type:
+              type: array
+              items:
+                type: string
+              description: >-
+                The value of the type property MUST be, or map to (through
+                interpretation
+
+                of the @context property), one or more URIs. If more than one
+                URI is
+
+                provided, the URIs MUST be interpreted as an unordered set.
+            healthCredSubject:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                info:
+                  type: object
+                  properties:
+                    adress:
+                      type: string
+                    city:
+                      type: string
+                    country:
+                      type: string
+                    postcode:
+                      type: string
+                    vat:
+                      type: string
+              title: A structure descrubing a Health Center information
+            userCredSubject:
+              type: object
+              properties:
+                id:
+                  type: string
+                testId:
+                  type: string
+                result:
+                  type: boolean
+            issuer:
+              type: string
+              description: >-
+                The value of the issuer property MUST be either a URI or an
+                object
+
+                containing an id property. It is RECOMMENDED that the URI in the
+                issuer
+
+                or its id be one which, if dereferenced, results in a document
+                containing
+
+                machine-readable information about the issuer that can be used
+                to verify
+
+                the information expressed in the credential.
+            issuanceDate:
+              type: string
+              format: date-time
+              description: >-
+                A credential MUST have an issuanceDate property. The value of
+                the issuanceDate
+
+                property MUST be a string value of an [RFC3339] combined date
+                and time string
+
+                representing the date and time the credential becomes valid,
+                which could
+
+                be a date and time in the future. Note that this value
+                represents the earliest
+
+                point in time at which the information associated with the
+                credentialSubject
+
+                property becomes valid.
+            proof:
+              description: >-
+                One or more cryptographic proofs that can be used to detect
+                tampering
+
+                and verify the authorship of a credential or presentation. The
+                specific
+
+                method used for an embedded proof MUST be included using the
+                type property.
+              type: object
+              properties:
+                type:
+                  type: string
+                created:
+                  type: string
+                proofPurpose:
+                  type: string
+                verificationMethod:
+                  type: string
+                signature:
+                  type: string
+          title: VerifiableCredential represents a verifiable credential
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  stan14100.ngi.vc.UserHealthSubject:
+    type: object
+    properties:
+      id:
+        type: string
+      testId:
+        type: string
+      result:
+        type: boolean
   stan14100.ngi.vc.VerifiableCredential:
     type: object
     properties:
@@ -20432,11 +21448,7 @@ definitions:
           of the @context property), one or more URIs. If more than one URI is
 
           provided, the URIs MUST be interpreted as an unordered set.
-      credentialSubject:
-        description: |-
-          The value of the credentialSubject property is defined as a set of
-          objects that contain one or more properties that are each related
-          to a subject of the verifiable credential.
+      healthCredSubject:
         type: object
         properties:
           id:
@@ -20457,6 +21469,15 @@ definitions:
               vat:
                 type: string
         title: A structure descrubing a Health Center information
+      userCredSubject:
+        type: object
+        properties:
+          id:
+            type: string
+          testId:
+            type: string
+          result:
+            type: boolean
       issuer:
         type: string
         description: >-

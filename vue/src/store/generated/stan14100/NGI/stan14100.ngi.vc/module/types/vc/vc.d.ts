@@ -16,12 +16,10 @@ export interface VerifiableCredential {
      * provided, the URIs MUST be interpreted as an unordered set.
      */
     type: string[];
-    /**
-     * The value of the credentialSubject property is defined as a set of
-     * objects that contain one or more properties that are each related
-     * to a subject of the verifiable credential.
-     */
-    credentialSubject: HealthCenterSubject | undefined;
+    /** represents a credential subject that identifies an authorized health center */
+    healthCredSubject: HealthCenterSubject | undefined;
+    /** represents a credential subject that connects health results to a user */
+    userCredSubject: UserHealthSubject | undefined;
     /**
      * The value of the issuer property MUST be either a URI or an object
      * containing an id property. It is RECOMMENDED that the URI in the issuer
@@ -60,6 +58,11 @@ export interface Info {
     postcode: string;
     vat: string;
 }
+export interface UserHealthSubject {
+    id: string;
+    testId: string;
+    result: boolean;
+}
 /**
  * A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.
  * The specific method used for an embedded proof MUST be included using the type property.
@@ -91,6 +94,13 @@ export declare const Info: {
     fromJSON(object: any): Info;
     toJSON(message: Info): unknown;
     fromPartial(object: DeepPartial<Info>): Info;
+};
+export declare const UserHealthSubject: {
+    encode(message: UserHealthSubject, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): UserHealthSubject;
+    fromJSON(object: any): UserHealthSubject;
+    toJSON(message: UserHealthSubject): unknown;
+    fromPartial(object: DeepPartial<UserHealthSubject>): UserHealthSubject;
 };
 export declare const Proof: {
     encode(message: Proof, writer?: Writer): Writer;

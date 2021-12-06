@@ -26,6 +26,9 @@ func CmdDids() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
 
 			params := &types.QueryDidsRequest{Pagination: pageReq}
 

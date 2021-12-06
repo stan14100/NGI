@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stan14100.ngi.vc;
 
+import "vc/vc.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
@@ -9,7 +10,49 @@ option go_package = "github.com/stan14100/NGI/x/vc/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+// Queries a list of vcs items.
+	rpc Vcs(QueryVcsRequest) returns (QueryVcsResponse) {
+		option (google.api.http).get = "/stan14100/ngi/vc/vcs";
+	}
+
+// Queries a list of vc items.
+	rpc Vc(QueryVcRequest) returns (QueryVcResponse) {
+		option (google.api.http).get = "/stan14100/ngi/vc/vc";
+	}
+
+    rpc ValidateVc(QueryValidateVcRequest) returns (QueryValidateVcResponse) {
+        option (google.api.http).post = "/stan14100/ngi/vc/validate";
+    }
+// this line is used by starport scaffolding # 2
 }
+
+
+message QueryVcsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryVcsResponse {
+    repeated VerifiableCredential vcs = 1;
+    cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVcRequest {
+  string vcId = 1;
+}
+
+message QueryVcResponse {
+    VerifiableCredential vc = 1;
+}
+
+message QueryValidateVcRequest {
+    string vcId = 1;
+    string pubKey = 2;
+}
+
+message QueryValidateVcResponse {
+    bool validationRes = 1;
+}
+
+
 
 // this line is used by starport scaffolding # 3

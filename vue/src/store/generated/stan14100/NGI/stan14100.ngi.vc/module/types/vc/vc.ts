@@ -20,12 +20,10 @@ export interface VerifiableCredential {
    * provided, the URIs MUST be interpreted as an unordered set.
    */
   type: string[]
-  /**
-   * The value of the credentialSubject property is defined as a set of
-   * objects that contain one or more properties that are each related
-   * to a subject of the verifiable credential.
-   */
-  credentialSubject: HealthCenterSubject | undefined
+  /** represents a credential subject that identifies an authorized health center */
+  healthCredSubject: HealthCenterSubject | undefined
+  /** represents a credential subject that connects health results to a user */
+  userCredSubject: UserHealthSubject | undefined
   /**
    * The value of the issuer property MUST be either a URI or an object
    * containing an id property. It is RECOMMENDED that the URI in the issuer
@@ -67,6 +65,12 @@ export interface Info {
   vat: string
 }
 
+export interface UserHealthSubject {
+  id: string
+  testId: string
+  result: boolean
+}
+
 /**
  * A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.
  * The specific method used for an embedded proof MUST be included using the type property.
@@ -92,17 +96,20 @@ export const VerifiableCredential = {
     for (const v of message.type) {
       writer.uint32(26).string(v!)
     }
-    if (message.credentialSubject !== undefined) {
-      HealthCenterSubject.encode(message.credentialSubject, writer.uint32(34).fork()).ldelim()
+    if (message.healthCredSubject !== undefined) {
+      HealthCenterSubject.encode(message.healthCredSubject, writer.uint32(34).fork()).ldelim()
+    }
+    if (message.userCredSubject !== undefined) {
+      UserHealthSubject.encode(message.userCredSubject, writer.uint32(42).fork()).ldelim()
     }
     if (message.issuer !== '') {
-      writer.uint32(42).string(message.issuer)
+      writer.uint32(50).string(message.issuer)
     }
     if (message.issuanceDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.issuanceDate), writer.uint32(50).fork()).ldelim()
+      Timestamp.encode(toTimestamp(message.issuanceDate), writer.uint32(58).fork()).ldelim()
     }
     if (message.proof !== undefined) {
-      Proof.encode(message.proof, writer.uint32(82).fork()).ldelim()
+      Proof.encode(message.proof, writer.uint32(66).fork()).ldelim()
     }
     return writer
   },
@@ -126,15 +133,18 @@ export const VerifiableCredential = {
           message.type.push(reader.string())
           break
         case 4:
-          message.credentialSubject = HealthCenterSubject.decode(reader, reader.uint32())
+          message.healthCredSubject = HealthCenterSubject.decode(reader, reader.uint32())
           break
         case 5:
-          message.issuer = reader.string()
+          message.userCredSubject = UserHealthSubject.decode(reader, reader.uint32())
           break
         case 6:
+          message.issuer = reader.string()
+          break
+        case 7:
           message.issuanceDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()))
           break
-        case 10:
+        case 8:
           message.proof = Proof.decode(reader, reader.uint32())
           break
         default:
@@ -164,10 +174,15 @@ export const VerifiableCredential = {
         message.type.push(String(e))
       }
     }
-    if (object.credentialSubject !== undefined && object.credentialSubject !== null) {
-      message.credentialSubject = HealthCenterSubject.fromJSON(object.credentialSubject)
+    if (object.healthCredSubject !== undefined && object.healthCredSubject !== null) {
+      message.healthCredSubject = HealthCenterSubject.fromJSON(object.healthCredSubject)
     } else {
-      message.credentialSubject = undefined
+      message.healthCredSubject = undefined
+    }
+    if (object.userCredSubject !== undefined && object.userCredSubject !== null) {
+      message.userCredSubject = UserHealthSubject.fromJSON(object.userCredSubject)
+    } else {
+      message.userCredSubject = undefined
     }
     if (object.issuer !== undefined && object.issuer !== null) {
       message.issuer = String(object.issuer)
@@ -200,8 +215,9 @@ export const VerifiableCredential = {
     } else {
       obj.type = []
     }
-    message.credentialSubject !== undefined &&
-      (obj.credentialSubject = message.credentialSubject ? HealthCenterSubject.toJSON(message.credentialSubject) : undefined)
+    message.healthCredSubject !== undefined &&
+      (obj.healthCredSubject = message.healthCredSubject ? HealthCenterSubject.toJSON(message.healthCredSubject) : undefined)
+    message.userCredSubject !== undefined && (obj.userCredSubject = message.userCredSubject ? UserHealthSubject.toJSON(message.userCredSubject) : undefined)
     message.issuer !== undefined && (obj.issuer = message.issuer)
     message.issuanceDate !== undefined && (obj.issuanceDate = message.issuanceDate !== undefined ? message.issuanceDate.toISOString() : null)
     message.proof !== undefined && (obj.proof = message.proof ? Proof.toJSON(message.proof) : undefined)
@@ -227,10 +243,15 @@ export const VerifiableCredential = {
         message.type.push(e)
       }
     }
-    if (object.credentialSubject !== undefined && object.credentialSubject !== null) {
-      message.credentialSubject = HealthCenterSubject.fromPartial(object.credentialSubject)
+    if (object.healthCredSubject !== undefined && object.healthCredSubject !== null) {
+      message.healthCredSubject = HealthCenterSubject.fromPartial(object.healthCredSubject)
     } else {
-      message.credentialSubject = undefined
+      message.healthCredSubject = undefined
+    }
+    if (object.userCredSubject !== undefined && object.userCredSubject !== null) {
+      message.userCredSubject = UserHealthSubject.fromPartial(object.userCredSubject)
+    } else {
+      message.userCredSubject = undefined
     }
     if (object.issuer !== undefined && object.issuer !== null) {
       message.issuer = object.issuer
@@ -458,6 +479,95 @@ export const Info = {
       message.vat = object.vat
     } else {
       message.vat = ''
+    }
+    return message
+  }
+}
+
+const baseUserHealthSubject: object = { id: '', testId: '', result: false }
+
+export const UserHealthSubject = {
+  encode(message: UserHealthSubject, writer: Writer = Writer.create()): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id)
+    }
+    if (message.testId !== '') {
+      writer.uint32(18).string(message.testId)
+    }
+    if (message.result === true) {
+      writer.uint32(24).bool(message.result)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): UserHealthSubject {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseUserHealthSubject } as UserHealthSubject
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string()
+          break
+        case 2:
+          message.testId = reader.string()
+          break
+        case 3:
+          message.result = reader.bool()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): UserHealthSubject {
+    const message = { ...baseUserHealthSubject } as UserHealthSubject
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id)
+    } else {
+      message.id = ''
+    }
+    if (object.testId !== undefined && object.testId !== null) {
+      message.testId = String(object.testId)
+    } else {
+      message.testId = ''
+    }
+    if (object.result !== undefined && object.result !== null) {
+      message.result = Boolean(object.result)
+    } else {
+      message.result = false
+    }
+    return message
+  },
+
+  toJSON(message: UserHealthSubject): unknown {
+    const obj: any = {}
+    message.id !== undefined && (obj.id = message.id)
+    message.testId !== undefined && (obj.testId = message.testId)
+    message.result !== undefined && (obj.result = message.result)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<UserHealthSubject>): UserHealthSubject {
+    const message = { ...baseUserHealthSubject } as UserHealthSubject
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id
+    } else {
+      message.id = ''
+    }
+    if (object.testId !== undefined && object.testId !== null) {
+      message.testId = object.testId
+    } else {
+      message.testId = ''
+    }
+    if (object.result !== undefined && object.result !== null) {
+      message.result = object.result
+    } else {
+      message.result = false
     }
     return message
   }

@@ -140,6 +140,21 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryDid
+         * @summary Queries a list of did items.
+         * @request GET:/stan14100/ngi/did/did
+         */
+        this.queryDid = (query, params = {}) => this.request({
+            path: `/stan14100/ngi/did/did`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryDids
          * @summary Queries a list of dids items.
          * @request GET:/stan14100/ngi/did/dids

@@ -4,8 +4,9 @@ import { SpVuexError } from '@starport/vuex';
 import { VerifiableCredential } from "./module/types/vc/vc";
 import { HealthCenterSubject } from "./module/types/vc/vc";
 import { Info } from "./module/types/vc/vc";
+import { UserHealthSubject } from "./module/types/vc/vc";
 import { Proof } from "./module/types/vc/vc";
-export { VerifiableCredential, HealthCenterSubject, Info, Proof };
+export { VerifiableCredential, HealthCenterSubject, Info, UserHealthSubject, Proof };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -39,10 +40,14 @@ function getStructure(template) {
 }
 const getDefaultState = () => {
     return {
+        Vcs: {},
+        Vc: {},
+        ValidateVc: {},
         _Structure: {
             VerifiableCredential: getStructure(VerifiableCredential.fromPartial({})),
             HealthCenterSubject: getStructure(HealthCenterSubject.fromPartial({})),
             Info: getStructure(Info.fromPartial({})),
+            UserHealthSubject: getStructure(UserHealthSubject.fromPartial({})),
             Proof: getStructure(Proof.fromPartial({})),
         },
         _Subscriptions: new Set(),
@@ -68,6 +73,24 @@ export default {
         }
     },
     getters: {
+        getVcs: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.Vcs[JSON.stringify(params)] ?? {};
+        },
+        getVc: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.Vc[JSON.stringify(params)] ?? {};
+        },
+        getValidateVc: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.ValidateVc[JSON.stringify(params)] ?? {};
+        },
         getTypeStructure: (state) => (type) => {
             return state._Structure[type].fields;
         }
@@ -96,6 +119,57 @@ export default {
                     throw new SpVuexError('Subscriptions: ' + e.message);
                 }
             });
+        },
+        async QueryVcs({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryVcs(query)).data;
+                while (all && value.pagination && value.pagination.nextKey != null) {
+                    let next_values = (await queryClient.queryVcs({ ...query, 'pagination.key': value.pagination.nextKey })).data;
+                    value = mergeResults(value, next_values);
+                }
+                commit('QUERY', { query: 'Vcs', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryVcs', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getVcs']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryVcs', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryVc({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryVc(query)).data;
+                while (all && value.pagination && value.pagination.nextKey != null) {
+                    let next_values = (await queryClient.queryVc({ ...query, 'pagination.key': value.pagination.nextKey })).data;
+                    value = mergeResults(value, next_values);
+                }
+                commit('QUERY', { query: 'Vc', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryVc', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getVc']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryVc', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryValidateVc({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryValidateVc(query)).data;
+                while (all && value.pagination && value.pagination.nextKey != null) {
+                    let next_values = (await queryClient.queryValidateVc({ ...query, 'pagination.key': value.pagination.nextKey })).data;
+                    value = mergeResults(value, next_values);
+                }
+                commit('QUERY', { query: 'ValidateVc', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryValidateVc', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getValidateVc']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryValidateVc', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
         },
         async sendMsgIssueVerifiableCredential({ rootGetters }, { value, fee = [], memo = '' }) {
             try {

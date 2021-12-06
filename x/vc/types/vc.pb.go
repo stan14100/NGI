@@ -42,24 +42,28 @@ type VerifiableCredential struct {
 	// The value of the credentialSubject property is defined as a set of
 	// objects that contain one or more properties that are each related
 	// to a subject of the verifiable credential.
-	CredentialSubject *HealthCenterSubject `protobuf:"bytes,4,opt,name=credentialSubject,proto3" json:"credentialSubject,omitempty"`
+	//
+	// Types that are valid to be assigned to CredentialSubject:
+	//	*VerifiableCredential_HealthCredSubject
+	//	*VerifiableCredential_UserCredSubject
+	CredentialSubject isVerifiableCredential_CredentialSubject `protobuf_oneof:"credential_subject"`
 	// The value of the issuer property MUST be either a URI or an object
 	// containing an id property. It is RECOMMENDED that the URI in the issuer
 	// or its id be one which, if dereferenced, results in a document containing
 	// machine-readable information about the issuer that can be used to verify
 	// the information expressed in the credential.
-	Issuer string `protobuf:"bytes,5,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	Issuer string `protobuf:"bytes,6,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	// A credential MUST have an issuanceDate property. The value of the issuanceDate
 	// property MUST be a string value of an [RFC3339] combined date and time string
 	// representing the date and time the credential becomes valid, which could
 	// be a date and time in the future. Note that this value represents the earliest
 	// point in time at which the information associated with the credentialSubject
 	// property becomes valid.
-	IssuanceDate *time.Time `protobuf:"bytes,6,opt,name=issuance_date,json=issuanceDate,proto3,stdtime" json:"issuance_date,omitempty"`
+	IssuanceDate *time.Time `protobuf:"bytes,7,opt,name=issuance_date,json=issuanceDate,proto3,stdtime" json:"issuance_date,omitempty"`
 	// One or more cryptographic proofs that can be used to detect tampering
 	// and verify the authorship of a credential or presentation. The specific
 	// method used for an embedded proof MUST be included using the type property.
-	Proof *Proof `protobuf:"bytes,10,opt,name=proof,proto3" json:"proof,omitempty"`
+	Proof *Proof `protobuf:"bytes,8,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
 func (m *VerifiableCredential) Reset()         { *m = VerifiableCredential{} }
@@ -95,6 +99,29 @@ func (m *VerifiableCredential) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_VerifiableCredential proto.InternalMessageInfo
 
+type isVerifiableCredential_CredentialSubject interface {
+	isVerifiableCredential_CredentialSubject()
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type VerifiableCredential_HealthCredSubject struct {
+	HealthCredSubject *HealthCenterSubject `protobuf:"bytes,4,opt,name=healthCredSubject,proto3,oneof" json:"healthCredSubject,omitempty"`
+}
+type VerifiableCredential_UserCredSubject struct {
+	UserCredSubject *UserHealthSubject `protobuf:"bytes,5,opt,name=userCredSubject,proto3,oneof" json:"userCredSubject,omitempty"`
+}
+
+func (*VerifiableCredential_HealthCredSubject) isVerifiableCredential_CredentialSubject() {}
+func (*VerifiableCredential_UserCredSubject) isVerifiableCredential_CredentialSubject()   {}
+
+func (m *VerifiableCredential) GetCredentialSubject() isVerifiableCredential_CredentialSubject {
+	if m != nil {
+		return m.CredentialSubject
+	}
+	return nil
+}
+
 func (m *VerifiableCredential) GetContext() []string {
 	if m != nil {
 		return m.Context
@@ -116,9 +143,16 @@ func (m *VerifiableCredential) GetType() []string {
 	return nil
 }
 
-func (m *VerifiableCredential) GetCredentialSubject() *HealthCenterSubject {
-	if m != nil {
-		return m.CredentialSubject
+func (m *VerifiableCredential) GetHealthCredSubject() *HealthCenterSubject {
+	if x, ok := m.GetCredentialSubject().(*VerifiableCredential_HealthCredSubject); ok {
+		return x.HealthCredSubject
+	}
+	return nil
+}
+
+func (m *VerifiableCredential) GetUserCredSubject() *UserHealthSubject {
+	if x, ok := m.GetCredentialSubject().(*VerifiableCredential_UserCredSubject); ok {
+		return x.UserCredSubject
 	}
 	return nil
 }
@@ -142,6 +176,14 @@ func (m *VerifiableCredential) GetProof() *Proof {
 		return m.Proof
 	}
 	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*VerifiableCredential) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*VerifiableCredential_HealthCredSubject)(nil),
+		(*VerifiableCredential_UserCredSubject)(nil),
+	}
 }
 
 //A structure descrubing a Health Center information
@@ -281,6 +323,66 @@ func (m *Info) GetVat() string {
 	return ""
 }
 
+type UserHealthSubject struct {
+	Id     string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	TestId string `protobuf:"bytes,2,opt,name=test_id,json=testId,proto3" json:"test_id,omitempty"`
+	Result bool   `protobuf:"varint,3,opt,name=result,proto3" json:"result,omitempty"`
+}
+
+func (m *UserHealthSubject) Reset()         { *m = UserHealthSubject{} }
+func (m *UserHealthSubject) String() string { return proto.CompactTextString(m) }
+func (*UserHealthSubject) ProtoMessage()    {}
+func (*UserHealthSubject) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2bbbde944c330ea7, []int{3}
+}
+func (m *UserHealthSubject) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UserHealthSubject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UserHealthSubject.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UserHealthSubject) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserHealthSubject.Merge(m, src)
+}
+func (m *UserHealthSubject) XXX_Size() int {
+	return m.Size()
+}
+func (m *UserHealthSubject) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserHealthSubject.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserHealthSubject proto.InternalMessageInfo
+
+func (m *UserHealthSubject) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *UserHealthSubject) GetTestId() string {
+	if m != nil {
+		return m.TestId
+	}
+	return ""
+}
+
+func (m *UserHealthSubject) GetResult() bool {
+	if m != nil {
+		return m.Result
+	}
+	return false
+}
+
 //A cryptographic proof that can be used to detect tampering and verify the authorship of a credential or presentation.
 //The specific method used for an embedded proof MUST be included using the type property.
 type Proof struct {
@@ -295,7 +397,7 @@ func (m *Proof) Reset()         { *m = Proof{} }
 func (m *Proof) String() string { return proto.CompactTextString(m) }
 func (*Proof) ProtoMessage()    {}
 func (*Proof) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2bbbde944c330ea7, []int{3}
+	return fileDescriptor_2bbbde944c330ea7, []int{4}
 }
 func (m *Proof) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -363,45 +465,51 @@ func init() {
 	proto.RegisterType((*VerifiableCredential)(nil), "stan14100.ngi.vc.VerifiableCredential")
 	proto.RegisterType((*HealthCenterSubject)(nil), "stan14100.ngi.vc.HealthCenterSubject")
 	proto.RegisterType((*Info)(nil), "stan14100.ngi.vc.Info")
+	proto.RegisterType((*UserHealthSubject)(nil), "stan14100.ngi.vc.UserHealthSubject")
 	proto.RegisterType((*Proof)(nil), "stan14100.ngi.vc.Proof")
 }
 
 func init() { proto.RegisterFile("vc/vc.proto", fileDescriptor_2bbbde944c330ea7) }
 
 var fileDescriptor_2bbbde944c330ea7 = []byte{
-	// 512 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x52, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0x8d, 0xf3, 0xf7, 0x7d, 0x99, 0x16, 0x54, 0x86, 0xaa, 0x58, 0x11, 0x72, 0xa3, 0x20, 0xa4,
-	0x08, 0x09, 0xbb, 0x05, 0xb6, 0x6c, 0x5a, 0x10, 0x74, 0x01, 0xaa, 0x5c, 0xc4, 0x82, 0x0d, 0x9a,
-	0x8c, 0xaf, 0x9d, 0x41, 0xc9, 0x8c, 0x35, 0xbe, 0xb6, 0x1a, 0x9e, 0xa2, 0x6f, 0xc1, 0x23, 0xf0,
-	0x0a, 0x2c, 0xbb, 0x64, 0x07, 0x4a, 0x5e, 0x04, 0xcd, 0x78, 0x1c, 0x7e, 0xd2, 0xdd, 0x39, 0x33,
-	0xf7, 0xde, 0x73, 0xe6, 0xdc, 0x21, 0x3b, 0x15, 0x8f, 0x2a, 0x1e, 0xe6, 0x5a, 0xa1, 0xa2, 0x7b,
-	0x05, 0x32, 0x79, 0xfc, 0xec, 0xf8, 0xe8, 0x28, 0x94, 0x99, 0x08, 0x2b, 0x3e, 0x3c, 0xcc, 0x94,
-	0xca, 0xe6, 0x10, 0xd9, 0xfb, 0x69, 0x99, 0x46, 0x28, 0x16, 0x50, 0x20, 0x5b, 0xe4, 0x75, 0xcb,
-	0x70, 0x3f, 0x53, 0x99, 0xb2, 0x30, 0x32, 0xa8, 0x3e, 0x1d, 0x7f, 0x6d, 0x93, 0xfd, 0xf7, 0xa0,
-	0x45, 0x2a, 0xd8, 0x74, 0x0e, 0xa7, 0x1a, 0x12, 0x90, 0x28, 0xd8, 0x9c, 0xfa, 0xe4, 0x3f, 0xae,
-	0x24, 0xc2, 0x25, 0xfa, 0xde, 0xa8, 0x33, 0x19, 0xc4, 0x0d, 0xa5, 0xb7, 0x49, 0x5b, 0x24, 0x7e,
-	0x7b, 0xe4, 0x4d, 0x06, 0x71, 0x5b, 0x24, 0x94, 0x92, 0x2e, 0x2e, 0x73, 0xf0, 0x3b, 0xb6, 0xcc,
-	0x62, 0x7a, 0x41, 0xee, 0xf0, 0xcd, 0xac, 0x8b, 0x72, 0xfa, 0x09, 0x38, 0xfa, 0xdd, 0x91, 0x37,
-	0xd9, 0x79, 0xf2, 0x30, 0xfc, 0xd7, 0x7b, 0xf8, 0x1a, 0xd8, 0x1c, 0x67, 0xa7, 0x20, 0x11, 0xb4,
-	0x2b, 0x8e, 0xb7, 0xfb, 0xe9, 0x01, 0xe9, 0x8b, 0xa2, 0x28, 0x41, 0xfb, 0x3d, 0x2b, 0xee, 0x18,
-	0x7d, 0x49, 0x6e, 0x19, 0xc4, 0x24, 0x87, 0x8f, 0x09, 0x43, 0xf0, 0xfb, 0x56, 0x68, 0x18, 0xd6,
-	0x91, 0x84, 0x4d, 0x24, 0xe1, 0xbb, 0x26, 0x92, 0x93, 0xee, 0xd5, 0x8f, 0x43, 0x2f, 0xde, 0x6d,
-	0xda, 0x5e, 0x30, 0x04, 0xfa, 0x98, 0xf4, 0x72, 0xad, 0x54, 0xea, 0x13, 0xdb, 0x7e, 0x6f, 0xdb,
-	0xe7, 0xb9, 0xb9, 0x8e, 0xeb, 0xaa, 0x31, 0x90, 0xbb, 0x37, 0xf8, 0x76, 0xe9, 0x78, 0x7f, 0xa6,
-	0x23, 0xd9, 0x02, 0x5c, 0x5e, 0x16, 0xd3, 0x47, 0xa4, 0x2b, 0x64, 0xaa, 0xfc, 0x8e, 0x15, 0x3a,
-	0xd8, 0x16, 0x3a, 0x93, 0xa9, 0x8a, 0x6d, 0xcd, 0xf8, 0x33, 0xe9, 0x1a, 0x66, 0x1e, 0xcf, 0x12,
-	0x0d, 0x45, 0xe1, 0x66, 0x3b, 0x66, 0xe6, 0x73, 0x81, 0xcb, 0x66, 0xbe, 0xc1, 0xf5, 0xee, 0x4a,
-	0x89, 0x7a, 0x69, 0x25, 0xec, 0xee, 0x2c, 0xa5, 0x43, 0xf2, 0x7f, 0xae, 0x0a, 0xe4, 0x2a, 0x01,
-	0xbb, 0x8e, 0x41, 0xbc, 0xe1, 0x74, 0x8f, 0x74, 0x2a, 0x86, 0x2e, 0x5b, 0x03, 0xc7, 0x5f, 0x3c,
-	0xd2, 0xb3, 0x6f, 0xde, 0xec, 0xb8, 0xd6, 0xae, 0x77, 0x6c, 0x54, 0x34, 0x30, 0x84, 0xe6, 0x33,
-	0x34, 0x94, 0x8e, 0xc9, 0xae, 0xcd, 0xe8, 0xbc, 0xd4, 0xb9, 0x2a, 0xc0, 0x99, 0xf8, 0xeb, 0x8c,
-	0x86, 0x84, 0x56, 0xf6, 0xdf, 0x71, 0x86, 0x42, 0xc9, 0x37, 0x80, 0x33, 0x95, 0x38, 0x4f, 0x37,
-	0xdc, 0xd0, 0xfb, 0x64, 0x50, 0x88, 0x4c, 0x32, 0x2c, 0x35, 0x38, 0x8f, 0xbf, 0x0f, 0x4e, 0x9e,
-	0x7f, 0x5b, 0x05, 0xde, 0xf5, 0x2a, 0xf0, 0x7e, 0xae, 0x02, 0xef, 0x6a, 0x1d, 0xb4, 0xae, 0xd7,
-	0x41, 0xeb, 0xfb, 0x3a, 0x68, 0x7d, 0x78, 0x90, 0x09, 0x9c, 0x95, 0xd3, 0x90, 0xab, 0x45, 0xb4,
-	0xc9, 0x39, 0x7a, 0xfb, 0xea, 0x2c, 0xba, 0x8c, 0x2a, 0x1e, 0x99, 0x97, 0x14, 0xd3, 0xbe, 0xfd,
-	0x22, 0x4f, 0x7f, 0x05, 0x00, 0x00, 0xff, 0xff, 0xf3, 0xf7, 0x37, 0xbe, 0x64, 0x03, 0x00, 0x00,
+	// 580 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x53, 0x4f, 0x4f, 0xd4, 0x40,
+	0x14, 0xdf, 0xb2, 0xcb, 0xc2, 0x0e, 0xa8, 0x30, 0x12, 0x68, 0x36, 0x66, 0x21, 0x25, 0x26, 0xc4,
+	0xc4, 0x16, 0xd4, 0xab, 0x17, 0xd4, 0x08, 0x07, 0x95, 0x54, 0xf0, 0xe0, 0x85, 0xcc, 0x4e, 0xdf,
+	0x76, 0xc7, 0xec, 0xce, 0x34, 0x33, 0xaf, 0x0d, 0xf8, 0x29, 0xf8, 0x08, 0xde, 0xfc, 0x2a, 0x1e,
+	0x39, 0x7a, 0xd3, 0xc0, 0x17, 0x31, 0x33, 0x6d, 0x17, 0xa4, 0xdc, 0x7e, 0xbf, 0xce, 0x7b, 0xbf,
+	0xf7, 0xe7, 0xf7, 0x4a, 0x96, 0x0a, 0x1e, 0x15, 0x3c, 0xcc, 0xb4, 0x42, 0x45, 0x57, 0x0c, 0x32,
+	0xb9, 0xf7, 0x6a, 0x6f, 0x77, 0x37, 0x94, 0xa9, 0x08, 0x0b, 0xde, 0xdf, 0x4c, 0x95, 0x4a, 0x27,
+	0x10, 0xb9, 0xf7, 0x61, 0x3e, 0x8a, 0x50, 0x4c, 0xc1, 0x20, 0x9b, 0x66, 0x65, 0x4a, 0x7f, 0x2d,
+	0x55, 0xa9, 0x72, 0x30, 0xb2, 0xa8, 0xfc, 0x1a, 0xfc, 0x68, 0x93, 0xb5, 0x2f, 0xa0, 0xc5, 0x48,
+	0xb0, 0xe1, 0x04, 0xde, 0x68, 0x48, 0x40, 0xa2, 0x60, 0x13, 0xea, 0x93, 0x05, 0xae, 0x24, 0xc2,
+	0x19, 0xfa, 0xde, 0x56, 0x7b, 0xa7, 0x17, 0xd7, 0x94, 0x3e, 0x24, 0x73, 0x22, 0xf1, 0xe7, 0xb6,
+	0xbc, 0x9d, 0x5e, 0x3c, 0x27, 0x12, 0x4a, 0x49, 0x07, 0xcf, 0x33, 0xf0, 0xdb, 0x2e, 0xcc, 0x61,
+	0x7a, 0x42, 0x56, 0xc7, 0xc0, 0x26, 0x38, 0xb6, 0x8a, 0x9f, 0xf3, 0xe1, 0x37, 0xe0, 0xe8, 0x77,
+	0xb6, 0xbc, 0x9d, 0xa5, 0x17, 0x4f, 0xc3, 0xbb, 0xbd, 0x87, 0x07, 0x65, 0x28, 0x48, 0x04, 0x5d,
+	0x05, 0x1f, 0xb4, 0xe2, 0xa6, 0x02, 0xfd, 0x44, 0x1e, 0xe5, 0x06, 0xf4, 0x6d, 0xd1, 0x79, 0x27,
+	0xba, 0xdd, 0x14, 0x3d, 0x31, 0xa0, 0x4b, 0xe1, 0x1b, 0xc9, 0xbb, 0xd9, 0x74, 0x9d, 0x74, 0x85,
+	0x31, 0x39, 0x68, 0xbf, 0xeb, 0xe6, 0xa9, 0x18, 0x7d, 0x47, 0x1e, 0x58, 0xc4, 0x24, 0x87, 0xd3,
+	0x84, 0x21, 0xf8, 0x0b, 0xae, 0x4c, 0x3f, 0x2c, 0xb7, 0x1c, 0xd6, 0x5b, 0x0e, 0x8f, 0xeb, 0x2d,
+	0xef, 0x77, 0x2e, 0xfe, 0x6c, 0x7a, 0xf1, 0x72, 0x9d, 0xf6, 0x96, 0x21, 0xd0, 0xe7, 0x64, 0x3e,
+	0xd3, 0x4a, 0x8d, 0xfc, 0x45, 0x97, 0xbe, 0xd1, 0xec, 0xf2, 0xc8, 0x3e, 0xc7, 0x65, 0xd4, 0xfe,
+	0x1a, 0xa1, 0x7c, 0xe6, 0xc0, 0xa9, 0x29, 0x7b, 0x0c, 0x80, 0x3c, 0xbe, 0x67, 0x41, 0x95, 0x0d,
+	0xde, 0x6d, 0x1b, 0x24, 0x9b, 0x42, 0x65, 0x8c, 0xc3, 0xf4, 0x19, 0xe9, 0x08, 0x39, 0x52, 0x7e,
+	0xdb, 0x95, 0x5f, 0x6f, 0x96, 0x3f, 0x94, 0x23, 0x15, 0xbb, 0x98, 0xe0, 0x3b, 0xe9, 0x58, 0x66,
+	0x57, 0xc2, 0x12, 0x0d, 0xc6, 0x54, 0xda, 0x15, 0xb3, 0xfa, 0x5c, 0xe0, 0x79, 0xad, 0x6f, 0x71,
+	0x79, 0x24, 0xb9, 0x44, 0x7d, 0xee, 0x4a, 0xb8, 0x23, 0x71, 0x94, 0xf6, 0xc9, 0x62, 0xa6, 0x0c,
+	0x72, 0x95, 0x80, 0xf3, 0xbd, 0x17, 0xcf, 0x38, 0x5d, 0x21, 0xed, 0x82, 0x95, 0xce, 0xf5, 0x62,
+	0x0b, 0x83, 0x63, 0xb2, 0xda, 0xb0, 0xab, 0x31, 0xe0, 0x06, 0x59, 0x40, 0x30, 0x78, 0x3a, 0x3b,
+	0xbe, 0xae, 0xa5, 0x87, 0x89, 0xed, 0x58, 0x83, 0xc9, 0x27, 0xe8, 0x9a, 0x58, 0x8c, 0x2b, 0x16,
+	0xfc, 0xf4, 0xc8, 0xbc, 0xdb, 0xef, 0xec, 0x44, 0x4b, 0xb1, 0xf2, 0x44, 0x6d, 0xef, 0x1a, 0x18,
+	0x42, 0x2d, 0x57, 0x53, 0x1a, 0x90, 0x65, 0xe7, 0xc7, 0x51, 0xae, 0x33, 0x65, 0xa0, 0x1a, 0xed,
+	0xbf, 0x6f, 0x34, 0x24, 0xb4, 0x70, 0xbf, 0x0d, 0x67, 0x28, 0x94, 0xfc, 0x00, 0x38, 0x56, 0x49,
+	0x35, 0xe9, 0x3d, 0x2f, 0xf4, 0x09, 0xe9, 0x19, 0x91, 0x4a, 0x86, 0xb9, 0x86, 0x6a, 0xf2, 0x9b,
+	0x0f, 0xfb, 0xaf, 0x7f, 0x5d, 0x0d, 0xbc, 0xcb, 0xab, 0x81, 0xf7, 0xf7, 0x6a, 0xe0, 0x5d, 0x5c,
+	0x0f, 0x5a, 0x97, 0xd7, 0x83, 0xd6, 0xef, 0xeb, 0x41, 0xeb, 0xeb, 0x76, 0x2a, 0x70, 0x9c, 0x0f,
+	0x43, 0xae, 0xa6, 0xd1, 0xcc, 0xbd, 0xe8, 0xe3, 0xfb, 0xc3, 0xe8, 0x2c, 0x2a, 0x78, 0x64, 0x27,
+	0x31, 0xc3, 0xae, 0x3b, 0xc7, 0x97, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x24, 0x5d, 0xdd, 0x20,
+	0x23, 0x04, 0x00, 0x00,
 }
 
 func (m *VerifiableCredential) Marshal() (dAtA []byte, err error) {
@@ -434,7 +542,7 @@ func (m *VerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintVc(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x42
 	}
 	if m.IssuanceDate != nil {
 		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.IssuanceDate, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.IssuanceDate):])
@@ -444,26 +552,23 @@ func (m *VerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= n2
 		i = encodeVarintVc(dAtA, i, uint64(n2))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
 	}
 	if len(m.Issuer) > 0 {
 		i -= len(m.Issuer)
 		copy(dAtA[i:], m.Issuer)
 		i = encodeVarintVc(dAtA, i, uint64(len(m.Issuer)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if m.CredentialSubject != nil {
 		{
-			size, err := m.CredentialSubject.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
+			size := m.CredentialSubject.Size()
+			i -= size
+			if _, err := m.CredentialSubject.MarshalTo(dAtA[i:]); err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintVc(dAtA, i, uint64(size))
 		}
-		i--
-		dAtA[i] = 0x22
 	}
 	if len(m.Type) > 0 {
 		for iNdEx := len(m.Type) - 1; iNdEx >= 0; iNdEx-- {
@@ -493,6 +598,48 @@ func (m *VerifiableCredential) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *VerifiableCredential_HealthCredSubject) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *VerifiableCredential_HealthCredSubject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.HealthCredSubject != nil {
+		{
+			size, err := m.HealthCredSubject.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintVc(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	return len(dAtA) - i, nil
+}
+func (m *VerifiableCredential_UserCredSubject) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *VerifiableCredential_UserCredSubject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.UserCredSubject != nil {
+		{
+			size, err := m.UserCredSubject.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintVc(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	return len(dAtA) - i, nil
+}
 func (m *HealthCenterSubject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -600,6 +747,53 @@ func (m *Info) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *UserHealthSubject) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserHealthSubject) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserHealthSubject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Result {
+		i--
+		if m.Result {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.TestId) > 0 {
+		i -= len(m.TestId)
+		copy(dAtA[i:], m.TestId)
+		i = encodeVarintVc(dAtA, i, uint64(len(m.TestId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintVc(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *Proof) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -692,8 +886,7 @@ func (m *VerifiableCredential) Size() (n int) {
 		}
 	}
 	if m.CredentialSubject != nil {
-		l = m.CredentialSubject.Size()
-		n += 1 + l + sovVc(uint64(l))
+		n += m.CredentialSubject.Size()
 	}
 	l = len(m.Issuer)
 	if l > 0 {
@@ -710,6 +903,30 @@ func (m *VerifiableCredential) Size() (n int) {
 	return n
 }
 
+func (m *VerifiableCredential_HealthCredSubject) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.HealthCredSubject != nil {
+		l = m.HealthCredSubject.Size()
+		n += 1 + l + sovVc(uint64(l))
+	}
+	return n
+}
+func (m *VerifiableCredential_UserCredSubject) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.UserCredSubject != nil {
+		l = m.UserCredSubject.Size()
+		n += 1 + l + sovVc(uint64(l))
+	}
+	return n
+}
 func (m *HealthCenterSubject) Size() (n int) {
 	if m == nil {
 		return 0
@@ -756,6 +973,26 @@ func (m *Info) Size() (n int) {
 	l = len(m.Vat)
 	if l > 0 {
 		n += 1 + l + sovVc(uint64(l))
+	}
+	return n
+}
+
+func (m *UserHealthSubject) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovVc(uint64(l))
+	}
+	l = len(m.TestId)
+	if l > 0 {
+		n += 1 + l + sovVc(uint64(l))
+	}
+	if m.Result {
+		n += 2
 	}
 	return n
 }
@@ -922,7 +1159,7 @@ func (m *VerifiableCredential) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CredentialSubject", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field HealthCredSubject", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -949,14 +1186,48 @@ func (m *VerifiableCredential) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.CredentialSubject == nil {
-				m.CredentialSubject = &HealthCenterSubject{}
-			}
-			if err := m.CredentialSubject.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			v := &HealthCenterSubject{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			m.CredentialSubject = &VerifiableCredential_HealthCredSubject{v}
 			iNdEx = postIndex
 		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserCredSubject", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthVc
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthVc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &UserHealthSubject{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.CredentialSubject = &VerifiableCredential_UserCredSubject{v}
+			iNdEx = postIndex
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
 			}
@@ -988,7 +1259,7 @@ func (m *VerifiableCredential) Unmarshal(dAtA []byte) error {
 			}
 			m.Issuer = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IssuanceDate", wireType)
 			}
@@ -1024,7 +1295,7 @@ func (m *VerifiableCredential) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 10:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
 			}
@@ -1420,6 +1691,140 @@ func (m *Info) Unmarshal(dAtA []byte) error {
 			}
 			m.Vat = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipVc(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthVc
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UserHealthSubject) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowVc
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UserHealthSubject: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UserHealthSubject: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TestId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TestId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Result = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipVc(dAtA[iNdEx:])

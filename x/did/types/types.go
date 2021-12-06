@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -476,6 +477,63 @@ func (didDoc *DidDocument) setRelationships(methodId string, relationships ...Ve
 	}
 }
 
+func (didDoc DidDocument) GetVerificationMethodBlockchainAddress(methodID string) (address string, err error) {
+	for _, vm := range didDoc.VerificationMethod {
+		if vm.Id == methodID {
+			switch k := vm.VerificationMaterial.(type) {
+			case *VerificationMethod_PublicKeyMultibase:
+				address, err = toAddress(k.PublicKeyMultibase[1:])
+			case *VerificationMethod_PublicKeyHex:
+				address, err = toAddress(k.PublicKeyHex)
+			default:
+				err = ErrKeyFormatNotSupported
+			}
+			return
+		}
+	}
+	err = ErrVerificationMethodNotFound
+	return
+}
+
+func (didDoc DidDocument) HasRelationship(
+	creator string,
+	relationships ...string,
+) bool {
+	// first check if the controller exists
+	for _, vm := range didDoc.VerificationMethod {
+		switch k := vm.VerificationMaterial.(type) {
+		case *VerificationMethod_PublicKeyMultibase:
+			addr, err := toAddress(k.PublicKeyMultibase[1:])
+			if err != nil || !MatchAddress(creator, addr) {
+				continue
+			}
+		case *VerificationMethod_PublicKeyHex:
+			addr, err := toAddress(k.PublicKeyHex)
+			if err != nil || !MatchAddress(creator, addr) {
+				continue
+			}
+		}
+		vrs := didDoc.GetVerificationRelationships(vm.Id)
+		if len(intersection(vrs, relationships)) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// GetVerificationRelationships returns the relationships associated with the provided methodId
+func (didDoc DidDocument) GetVerificationRelationships(methodId string) []string {
+	relationships := []string{}
+	for vrn, vr := range VerificationRelationships {
+		for _, vmID := range *didDoc.getRelationships(vr) {
+			if vmID == methodId {
+				relationships = append(relationships, vrn)
+			}
+		}
+	}
+	return relationships
+}
+
 func NewVerification(
 	method VerificationMethod,
 	relationships []string,
@@ -552,6 +610,28 @@ func UpdateDidMetadata(meta *DidMetadata, versionData []byte, updated time.Time)
 // 	return
 // }
 
+func MatchAddress(account string, address string) bool {
+	return account == address
+}
+
+func toAddress(hexKey string) (addr string, err error) {
+	// decode the hex string
+	pkb, err := hex.DecodeString(hexKey)
+	if err != nil {
+		return
+	}
+	// check the size of the decoded byte slice, otherwise the pk.Address will panic
+	if len(pkb) != secp256k1.PubKeySize {
+		err = fmt.Errorf("invalid public key size")
+		return
+	}
+	// load the public key
+	pk := &secp256k1.PubKey{Key: pkb}
+	// generate the address
+	addr, err = sdk.Bech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), pk.Address())
+	return
+}
+
 func distinct(a []string) []string {
 	m := make(map[string]struct{})
 	for _, item := range a {
@@ -563,4 +643,19 @@ func distinct(a []string) []string {
 	}
 	sort.Strings(d)
 	return d
+}
+
+func intersection(a, b []string) []string {
+	m := make(map[string]struct{})
+	for _, item := range a {
+		m[item] = struct{}{}
+	}
+	i := []string{}
+	for _, item := range distinct(b) {
+		if _, ok := m[item]; ok {
+			i = append(i, item)
+		}
+	}
+	sort.Strings(i)
+	return i
 }

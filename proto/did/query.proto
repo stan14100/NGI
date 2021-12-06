@@ -15,18 +15,31 @@ service Query {
 		option (google.api.http).get = "/stan14100/ngi/did/dids";
 	}
 
+// Queries a list of did items.
+	rpc Did(QueryDidRequest) returns (QueryDidResponse) {
+		option (google.api.http).get = "/stan14100/ngi/did/did";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
 message QueryDidsRequest {
-  cosmos.base.query.v1beta1.PageRequest pagination = 2;
-
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryDidsResponse {
   repeated DidDocument didDocuments = 1;
 
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDidRequest {
+  string id = 1;
+}
+
+message QueryDidResponse {
+  DidDocument didDocument = 1;
+  DidMetadata didMetadata = 2;
 }
 
 // this line is used by starport scaffolding # 3
