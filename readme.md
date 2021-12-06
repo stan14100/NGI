@@ -67,4 +67,4 @@ cosmos-key                = 1*255id-char "1" 20*255HEXDIG
 
 DIDs of `key` type are always generated from the Cosmos blockchain address they refer to. For example, see a DID of `key` type:
 
-- `did:cosmos:key:cosmos1hjct6q7npsspsg3dgvzk3sdf89spmlpfg8wwf7`
+- `did:cosmos:ngi:cosmos1hjct6q7npsspsg3dgvzk3sdf89spmlpfg8wwf7`
